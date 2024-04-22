@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,8 +47,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/transfer").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/account").hasRole("ADMIN")
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/events")
+                        .authenticated()
+                        .requestMatchers(HttpMethod.POST, "/events/add").hasAnyRole("ADMIN", "MODERATOR", "ORGANIZER")
+                        .requestMatchers(HttpMethod.PUT, "/events/update").hasAnyRole("ADMIN", "MODERATOR", "ORGANIZER")
+                        .requestMatchers(HttpMethod.DELETE, "/events/delete").hasAnyRole("ADMIN", "MODERATOR", "ORGANIZER")
                         .anyRequest().permitAll())
                 .formLogin(form -> form.permitAll())
                 .httpBasic(httpSecurityHttpBasicConfigurer -> httpSecurityHttpBasicConfigurer.authenticationEntryPoint(authenticationEntryPoint))
@@ -86,12 +90,12 @@ public class SecurityConfig {
     @EventListener(ApplicationReadyEvent.class)
     public void establishUsers()
     {
-        /*userDetailsService.saveUser(new User("michal", passwordEncoder().encode("michal"), "USER"));
-        userDetailsService.saveUser(new User("jan", passwordEncoder().encode("jan"), "USER"));
-        userDetailsService.saveUser(new User("admin", passwordEncoder().encode("admin"), "ROLE_ADMIN"));
-        userDetailsService.saveUser(new User("kamil", passwordEncoder().encode("kamil"), "ORGANIZER"));
-        userDetailsService.saveUser(new User("wacek", passwordEncoder().encode("wacek"), "USER"));
-        userDetailsService.saveUser(new User("kuba", passwordEncoder().encode("kuba"), "ORGANIZER"));*/
+//        userDetailsService.saveUser(new User("michal", passwordEncoder().encode("michal"), "ROLE_USER"));
+//        userDetailsService.saveUser(new User("jan", passwordEncoder().encode("jan"), "ROLE_USER"));
+//        userDetailsService.saveUser(new User("admin", passwordEncoder().encode("admin"), "ROLE_ADMIN"));
+//        userDetailsService.saveUser(new User("kamil", passwordEncoder().encode("kamil"), "ROLE_ORGANIZER"));
+//        userDetailsService.saveUser(new User("wacek", passwordEncoder().encode("wacek"), "ROLE_USER"));
+//        userDetailsService.saveUser(new User("kuba", passwordEncoder().encode("kuba"), "ROLE_ORGANIZER"));
 
 
     }

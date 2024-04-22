@@ -3,9 +3,24 @@
     <div class="m-2 d-flex align-items-center" style="width: 300px; height: 64px; background-color: yellow;">Zdjcie/LOGO</div>
   </div>
   
-  <button type="button" class="btn align-self-start" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">HomePage</button>
-  <button type="button" class="btn align-self-start" routerLink="/events" routerLinkActive="active">Events</button>
-  <button type="button" class="btn align-self-start" routerLink="/artists" routerLinkActive="active">Artists</button>
-  <button type="button" class="btn align-self-start" routerLink="/organizers" routerLinkActive="active">Organizers</button>
-  <button type="button" class="btn align-self-start" routerLink="/reviews" routerLinkActive="active">Reviews</button>
+  <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <mat-icon class="navbar-icon">home</mat-icon>
+      Home
+  </button>
+  <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/events" routerLinkActive="active">
+    <mat-icon class="navbar-icon">event</mat-icon>
+      Events
+  </button>
+  <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/artists" routerLinkActive="active">
+    <img src="assets/icons/artistIcon.svg" class="navbar-icon" alt="Artist Icon">
+      Artists
+  </button>
+  <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/organizers" routerLinkActive="active">  
+    <img src="assets/icons/organizerIcon.svg" class="navbar-icon" alt="Organizer Icon">
+    Organizers
+  </button>
+  <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/reviews" routerLinkActive="active">
+    <mat-icon class="navbar-icon">star</mat-icon>
+      Reviews
+  </button>
 </div>

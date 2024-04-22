@@ -1,33 +1,44 @@
-<div class="d-flex bd-highlight">
-  <p class="h1 p-2 flex-fill bd-highlight">Events</p>
-  <button type="button" class="btn btn-primary update-button" (click)="update()"><p class="d-flex text-align-center justify-content-center"><mat-icon>add</mat-icon>Add</p></button>
+<div class="d-flex">
+  <p class="h1 p-2 flex-fill">Events</p>
+  <button type="button" class="btn btn-primary update-button" (click)="openDialog(true)">
+    <p class="d-flex text-align-center justify-content-center">
+      <mat-icon>add</mat-icon>
+      Add
+    </p>
+  </button>
 </div>
 
 <div class="event-list-container">
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">">
 
       <!-- Id Column -->
       <ng-container matColumnDef="Id">
-        <th mat-header-cell *matHeaderCellDef> id </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="id"> Id </th>
         <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
       </ng-container>
 
-      <!-- Name Column -->
+      <!-- Start Date Column -->
       <ng-container matColumnDef="Start Date">
-        <th mat-header-cell *matHeaderCellDef> StartDate </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="startDate"> StartDate </th>
         <td mat-cell *matCellDef="let element"> {{ element.startDate | date:'short' }} </td>
       </ng-container>
-
-      <!-- Weight Column -->
+      <mat-form-field>
+        <mat-label>Choose a start date</mat-label>
+        <input matInput [matDatepicker]="startpicker">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="startpicker"></mat-datepicker-toggle>
+        <mat-datepicker #startpicker></mat-datepicker>
+      </mat-form-field>
+      <!-- End Date Column -->
       <ng-container matColumnDef="End Date">
-        <th mat-header-cell *matHeaderCellDef> EndDate </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="endDate"> EndDate </th>
         <td mat-cell *matCellDef="let element"> {{ element.endDate | date:'short' }} </td>
       </ng-container>
 
-      <!-- Symbol Column -->
+      <!-- Description Column -->
       <ng-container matColumnDef="Description">
-        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <th mat-header-cell  *matHeaderCellDef mat-sort-header="description"> Description </th>
         <td mat-cell *matCellDef="let element"> {{element.description}} </td>
       </ng-container>
 

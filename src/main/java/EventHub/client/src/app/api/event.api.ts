@@ -17,13 +17,11 @@ export class EventApi extends GenericApi<EventDto> {
 
   getFiveLast(methodName: string = "getfivelast"): Observable<EventDto[]> {
     let events = super.getAll(this.controllerName, methodName);
-    console.log(events);
     return events;
   }
 
   override getAll(methodName: string = "getall"): Observable<EventDto[]> {
     let events = super.getAll(this.controllerName, methodName);
-    console.log(events);
     return events;
   }
 
@@ -31,8 +29,12 @@ export class EventApi extends GenericApi<EventDto> {
     return super.getById(this.controllerName, id);
   }
 
-  override insert(controllerName: string = this.controllerName, event: EventDto): Observable<EventDto> {
+  override insert(controllerName: string = this.controllerName, event: EventDto): Observable<EventDto[]> {
     return super.insert(this.controllerName, event);
+  }
+
+  override update(controllerName: string = this.controllerName, event: EventDto): Observable<EventDto[]> {
+    return super.update(this.controllerName, event);
   }
 
   override delete(controllerName: string = this.controllerName, id: number): Observable<void> {

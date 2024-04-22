@@ -23,13 +23,15 @@ public abstract class GenericController<M extends IModel, S extends GenericServi
     }
 
     @PostMapping("/add")
-    public M add(@RequestBody M object) {
-        return (M) service.insert(object);
+    public List<M> add(@RequestBody M object) {
+        service.insert(object);
+        return service.getAll();
     }
 
     @PutMapping("/edit")
-    public M edit(@RequestBody M object) {
-        return (M) service.update(object);
+    public List<M>edit(@RequestBody M object) {
+        service.update(object);
+        return service.getAll();
     }
 
     @DeleteMapping("delete/{id}")

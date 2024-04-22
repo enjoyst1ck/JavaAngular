@@ -15,12 +15,12 @@ export abstract class GenericApi<Model> {
     return this._http.get<Model>(`${this._apiUrl}/${controllerName}/${id}`);
   }
 
-  insert(controllerName: string, object: Model): Observable<Model> {
-    return this._http.post<Model>(`${this._apiUrl}/${controllerName}/add`, object);
+  insert(controllerName: string, object: Model): Observable<Model[]> {
+    return this._http.post<Model[]>(`${this._apiUrl}/${controllerName}/add`, object);
   }
 
-  update(controllerName: string, object: Model): Observable<Model> {
-    return this._http.put<Model>(`${this._apiUrl}/${controllerName}/edit`, object);
+  update(controllerName: string, object: Model): Observable<Model[]> {
+    return this._http.put<Model[]>(`${this._apiUrl}/${controllerName}/edit`, object);
   }
 
   delete(controllerName: string, id: number): Observable<void> {

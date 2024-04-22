@@ -1,6 +1,6 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, NgZone, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { EventDto } from 'src/app/dtos/eventDto';
 
 @Component({
   selector: 'app-event-form',
@@ -8,17 +8,26 @@ import { EventDto } from 'src/app/dtos/eventDto';
   styleUrls: ['./event-form.component.scss']
 })
 export class EventFormComponent {
-  
-  event: EventDto;
+  @ViewChild('picker') picker: any;
+
+  form: FormGroup;
   isNew: boolean;
 
-  constructor(public dialogRef: MatDialogRef<EventFormComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {    
-    this.event = data.event;
+  constructor(public dialogRef: MatDialogRef<EventFormComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private zone: NgZone) {    
+    this.form = data.form;
     this.isNew = data.isNew;
   }
   
-  update(event: EventDto) {
-    this.dialogRef.close(event);
+  przyciskDoSprawdzania() {
+    const formData = this.form.value;
+    console.log('formdata:', formData);
+  }
+
+  update() {
+    if (this.form.valid) {
+      const formData = this.form.value;
+      this.dialogRef.close(formData);
+    }
   }
 
   close() {

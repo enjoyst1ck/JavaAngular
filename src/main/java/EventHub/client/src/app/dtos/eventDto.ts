@@ -6,4 +6,5 @@ export class EventDto {
   endDate!: Date;
   description!: string;
   attachments: AttachmentDto[] = [];
+  static CLASS_NAME: string = 'EventDto';
 }

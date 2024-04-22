@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-navigation',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class NavigationComponent {
 
+  constructor(private _sanitizer: DomSanitizer) {  }
+
+  getSVGImageUrl(image: any) {
+    let base64string = btoa(image);
+    return this._sanitizer.bypassSecurityTrustResourceUrl(
+      `data:image/svg+xml;base64,${base64string}`
+    );
+  }
 }
