@@ -1,6 +1,7 @@
 package EventHub.controllers;
 
 import EventHub.dtos.LoginDto;
+import EventHub.dtos.RegisterDto;
 import EventHub.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,11 @@ public class UserController {
     @PutMapping("/account/login")
     public Boolean login(@RequestBody LoginDto loginDto) {
         return service.login(loginDto);
+    }
+
+    @PutMapping("/account/register")
+    public Boolean register(@RequestBody RegisterDto registerDto) {
+        return service.register(registerDto);
     }
 /*
     @GetMapping("/current")

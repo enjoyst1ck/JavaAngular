@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, ReplaySubject, map, of } from 'rxjs';
 import { EventApi } from 'src/app/api/event.api';
 import { LoginDto } from 'src/app/dtos/loginDto';
+import { RegisterDto } from 'src/app/dtos/registerDto';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +12,7 @@ export class AuthService {
   private _username!: string;
   private _password!: string;
 
-  constructor(public http: HttpClient, private _eventApi: EventApi) { }
+  constructor(private _http: HttpClient, private _eventApi: EventApi) { }
 
   setCredentials(username: string, password: string) {
     this._username = username;
@@ -23,8 +24,7 @@ export class AuthService {
   }*/
 
   login(dto: LoginDto) {        
-
-    this.http.put<string>("http://localhost:8080/account/login", dto).subscribe(
+    this._http.put<string>("http://localhost:8080/account/login", dto).subscribe(
       res => {
         console.log(res);
         return res;
@@ -33,16 +33,17 @@ export class AuthService {
         console.error(error);
       }
     );
+  }
 
-    /*
-    this._eventApi.chwilowe(dto).subscribe(result => {
-      console.log(result);
-      if (result) {
-        console.log("result");
-        console.log(result);
+  register(dto: RegisterDto) {        
+    this._http.put<string>("http://localhost:8080/account/register", dto).subscribe(
+      res => {
+        console.log(res);
+        return res;
+      },
+      error => {
+        console.error(error);
       }
-      console.log(result);
-    });*/
-
+    );
   }
 }
