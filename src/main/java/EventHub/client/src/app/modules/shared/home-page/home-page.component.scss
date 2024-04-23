@@ -1,4 +1,42 @@
 .row {
   justify-content: center;
   text-align: center;
+  align-items: center;
+}
+
+.event-up-element {
+  width: 100%;
+}
+
+.image-up {
+  width: 100%;
+  max-width: 480px; 
+  height: auto;
+  align-items: center;
+}
+
+.image-down {
+  width: 100%;
+  max-width: 320px; 
+  height: auto;
+  align-items: center;
+}
+
+
+@media (max-width: 801px) {
+  .event-up-element {
+    width: 100%;
+    margin: 10px 10px;
+    align-items: center;
+  }
+
+  .image-up {
+    width: 90%;
+  }
+
+  .image-down {
+    width: 90%;
+    margin: 10px 10px;
+    align-items: center;
+  }
 }
