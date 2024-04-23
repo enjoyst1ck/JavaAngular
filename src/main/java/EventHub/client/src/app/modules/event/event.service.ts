@@ -62,7 +62,7 @@ export class EventService implements OnInit, OnDestroy {
     }).afterClosed().subscribe(result => {     
       console.log(result);
       if (result && isNew) {
-        this._api.insert(undefined, result).subscribe(result => {
+        this._api.insert(undefined, result).subscribe(event => {
           if (event) {
             if (event != null) {
               this.dataUpdated.next();

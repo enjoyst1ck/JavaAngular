@@ -39,8 +39,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    MatButtonModule,
-    EventModule
+    MatButtonModule
   ]
 })
 export class EventModule { }

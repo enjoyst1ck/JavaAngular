@@ -10,7 +10,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [

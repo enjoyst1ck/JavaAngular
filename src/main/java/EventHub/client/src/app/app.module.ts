@@ -8,6 +8,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthModule } from './modules/auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -19,10 +20,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     MatSlideToggleModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AuthModule
   ],
   providers: [
-    EventApi 
+    EventApi
   ],
   bootstrap: [
     AppComponent

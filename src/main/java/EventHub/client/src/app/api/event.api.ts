@@ -1,8 +1,10 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { EventDto } from "../dtos/eventDto";
 import { GenericApi } from "./generic.api";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
+import { AuthService } from "../modules/auth/auth.service";
+import { LoginDto } from "../dtos/loginDto";
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +13,40 @@ export class EventApi extends GenericApi<EventDto> {
   
   controllerName: string = "events";
 
-  constructor(http: HttpClient) {
+  constructor(public http: HttpClient) {
       super(http);
   }
 
+  chwilowe(dto: LoginDto): Observable<string> {
+    console.log(dto);
+
+    const body = {
+      username: dto.username,
+      password: dto.password
+    }
+
+    return this.http.put<string>("http://localhost:8080/account/login", body);
+  }
+  
   getFiveLast(methodName: string = "getfivelast"): Observable<EventDto[]> {
-    let events = super.getAll(this.controllerName, methodName);
+    //this.authService.setCredentials('admin', 'admin');e
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic admin:admin'//this.authService.getAuthorizationHeader()
+    });
+
+    let events = super.getAll(this.controllerName, methodName, headers);
     return events;
   }
 
   override getAll(methodName: string = "getall"): Observable<EventDto[]> {
-    let events = super.getAll(this.controllerName, methodName);
+    //this.authService.setCredentials('admin', 'admin');
+    
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic admin:admin'//this.authService.getAuthorizationHeader()
+    });
+
+    let events = super.getAll(this.controllerName, methodName, headers);
     return events;
   }
 

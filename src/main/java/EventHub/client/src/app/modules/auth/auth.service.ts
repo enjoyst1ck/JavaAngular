@@ -1,23 +1,48 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, ReplaySubject, map, of } from 'rxjs';
+import { EventApi } from 'src/app/api/event.api';
+import { LoginDto } from 'src/app/dtos/loginDto';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private _username!: string;
+  private _password!: string;
 
-  constructor() { }
+  constructor(public http: HttpClient, private _eventApi: EventApi) { }
 
-  isLoggedIn() {
-    const token = localStorage.getItem('token'); // get token from local storage
-    
-    if (token) {
-      const payload = atob(token.split('.')[1]); // decode payload of token
-      console.log(payload)
-      const parsedPayload = JSON.parse(payload); // convert payload into an Object
-      console.log(parsedPayload)
-      
-      return parsedPayload.exp > Date.now() / 1000; // check if token is expired
-    }
-    
-    return false;
+  setCredentials(username: string, password: string) {
+    this._username = username;
+    this._password = password;
+  }
+
+  /*getAuthorizationHeader(): string {
+    return 'Basic ' + btoa(this._username + ':' + this._password);
+  }*/
+
+  login(dto: LoginDto) {        
+
+    this.http.put<string>("http://localhost:8080/account/login", dto).subscribe(
+      res => {
+        console.log(res);
+        return res;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+
+    /*
+    this._eventApi.chwilowe(dto).subscribe(result => {
+      console.log(result);
+      if (result) {
+        console.log("result");
+        console.log(result);
+      }
+      console.log(result);
+    });*/
+
   }
 }
