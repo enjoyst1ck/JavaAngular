@@ -7,8 +7,14 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent {
-
+  isMobileMenuOpen = false;
+  isLoggedIn = false;
+  
   constructor(private _sanitizer: DomSanitizer) {  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
 
   getSVGImageUrl(image: any) {
     let base64string = btoa(image);

@@ -23,9 +23,9 @@ public abstract class GenericController<M extends IModel, S extends GenericServi
     }
 
     @PostMapping("/add")
-    public List<M> add(@RequestBody M object) {
-        service.insert(object);
-        return service.getAll();
+    public M add(@RequestBody M object) {
+        //service.insert(object);
+        return object;
     }
 
     @PutMapping("/edit")

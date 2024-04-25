@@ -1,54 +1,77 @@
 <div class="navbar">
-  <div class="d-flex align-items-center justify-content-center">
+  <div class="d-flex justify-content-between">
     <div class="m-2 d-flex align-items-center">
       <div class="logo">EventHUB</div>
     </div>
   </div>
-  
-  <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-    <mat-icon class="navbar-icon">home</mat-icon>
-    <span class="nav-text">
-      Home
-    </span>
-  </button>
-  <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/events" routerLinkActive="active">
-    <mat-icon class="navbar-icon">event</mat-icon>
-    <span class="nav-text">
-      Events
-    </span>  
-  </button>
-  <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/artists" routerLinkActive="active">
-    <img src="assets/icons/artistIcon.svg" class="navbar-icon" alt="Artist Icon">
-    <span class="nav-text">
-      Artists
-    </span>
-  </button>
-  <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/organizers" routerLinkActive="active">  
-    <img src="assets/icons/organizerIcon.svg" class="navbar-icon" alt="Organizer Icon">
-    <span class="nav-text">
-    Organizers
-  </span>
-  </button>
-  <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/reviews" routerLinkActive="active">
-    <mat-icon class="navbar-icon">star</mat-icon>
-    <span class="nav-text">
-      Reviews
-    </span>
-  </button>
 
-  <div class="d-flex flex-row"> 
-    <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center mx-3" routerLink="/login" routerLinkActive="active">
-      <img src="assets/icons/login.png" class="navbar-icon" alt="Login Icon">
+  <div class="nav-menu">
+    <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <mat-icon class="navbar-icon">home</mat-icon>
       <span class="nav-text">
-        Login
+        Home
       </span>
     </button>
-    
-    <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/register" routerLinkActive="active">
-      <img src="assets/icons/register.png" class="navbar-icon" alt="Register Icon">
+    <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/events" routerLinkActive="active">
+      <mat-icon class="navbar-icon">event</mat-icon>
       <span class="nav-text">
-        Register
+        Events
+      </span>  
+    </button>
+    <button type="button" class="btn d-flex flex-row justify-content-center align-items-center" routerLink="/artists" routerLinkActive="active">
+      <img src="assets/icons/artistIcon.svg" class="navbar-icon" alt="Artist Icon">
+      <span class="nav-text">
+        Artists
       </span>
     </button>
+    <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/organizers" routerLinkActive="active">  
+      <img src="assets/icons/organizerIcon.svg" class="navbar-icon" alt="Organizer Icon">
+      <span class="nav-text">
+      Organizers
+    </span>
+    </button>
+    <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/reviews" routerLinkActive="active">
+      <mat-icon class="navbar-icon">star</mat-icon>
+      <span class="nav-text">
+        Reviews
+      </span>
+    </button>
+  </div>
+  <div class="login-button"> 
+    <ng-container *ngIf="isLoggedIn else logOutButton">
+      <button type="button" class="btn btn d-flex justify-content-center align-items-center mx-3" routerLink="/login" routerLinkActive="active">
+        <img src="assets/icons/login.png" class="navbar-icon" alt="Login Icon">
+        <span class="nav-text">
+          Login
+        </span>
+      </button>
+      <button type="button" class="btn btn d-flex justify-content-center align-items-center" routerLink="/register" routerLinkActive="active">
+        <img src="assets/icons/register.png" class="navbar-icon" alt="Register Icon">
+        <span class="nav-text">
+          Register
+        </span>
+      </button>
+    </ng-container>
+    <ng-template #logOutButton>
+      <button type="button" class="btn btn d-flex justify-content-center align-items-center mx-3" routerLink="/login" routerLinkActive="active">
+        <img src="assets/icons/login.png" class="navbar-icon" alt="Login Icon">
+        <span class="nav-text">
+          Log Out
+        </span>
+      </button>
+    </ng-template>
+  </div>
+
+  <div class="mobile-menu">
+      <!-- Przycisk otwierający menu -->
+    <button type="button" class="menu-toggle" (click)="toggleMobileMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <!-- Elementy menu dla małych ekranów -->
+    <div class="mobile-menu-content" [ngClass]="{'active': isMobileMenuOpen}">
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+    </div>
   </div>
 </div>

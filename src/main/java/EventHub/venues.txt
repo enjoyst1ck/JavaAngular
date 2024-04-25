@@ -1,0 +1,10 @@
+INSERT INTO event_hub.venue VALUES (1, 'al. Księcia Józefa Poniatowskiego 1', 'Warszawa', 'PGE Narodowy w Warszawie to miejsce najlepszych wydarzeń sportowych, rozrywkowych i biznesowych w Polsce.', 'PGE NARODOWY');
+INSERT INTO event_hub.venue VALUES (2, 'ul. Gen. W. Andersa 2A', 'Gdynia', "Lotnisko Gdynia - Kosakowo to polski port lotniczy wykorzystywany w celach cywilnych, jak i wojskowych. Teren Lotniska Gdynia to 700 hektarów.", 'Lotnisko Gdynia - Kosakowo');
+INSERT INTO event_hub.venue VALUES (3, 'ul. Puławska 266', 'Warszawa', "Wyjątkowa przestrzeń oraz pojemna widownia Toru Służewiec Warszawa pozwala na organizację w tym miejscu nie tylko wyścigów konnych, ale także koncertów dla szerokiej publiczności i innych wydarzeń o charakterze rozrywkowo-kulturalnym.", 'Lotnisko Gdynia - Kosakowo');
+INSERT INTO event_hub.venue VALUES (4, 'Lotnisko, 78-111 Bagicz', 'Kołobrzeg', "Lotnisko Podczele, mieszczące się na malowniczo położonym obszarze rozciągającym się wzdłuż linii brzegowej to nie tylko niezwykle atrakcyjny punkt widokowy, ale także doskonałe miejsce na imprezy terenowe, takie jak koncerty i festiwale.", 'Lotnisko Kołobrzeg Podczele (Bagicz)');
+
+INSERT INTO event_hub.venue VALUES (, 'Lotnisko, 78-111 Bagicz', 'Kołobrzeg', "Lotnisko Podczele, mieszczące się na malowniczo położonym obszarze rozciągającym się wzdłuż linii brzegowej to nie tylko niezwykle atrakcyjny punkt widokowy, ale także doskonałe miejsce na imprezy terenowe, takie jak koncerty i festiwale.", 'Lotnisko Kołobrzeg Podczele (Bagicz)');
+INSERT INTO event_hub.venue VALUES (4, 'Lotnisko, 78-111 Bagicz', 'Kołobrzeg', "Lotnisko Podczele, mieszczące się na malowniczo położonym obszarze rozciągającym się wzdłuż linii brzegowej to nie tylko niezwykle atrakcyjny punkt widokowy, ale także doskonałe miejsce na imprezy terenowe, takie jak koncerty i festiwale.", 'Lotnisko Kołobrzeg Podczele (Bagicz)');
+
+
+SELECT * FROM event_hub.venue;

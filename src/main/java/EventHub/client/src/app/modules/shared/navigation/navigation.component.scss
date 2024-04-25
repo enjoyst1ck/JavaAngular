@@ -1,6 +1,7 @@
 button {
   padding: 20px;
   margin: 10px 0;
+  border: none;
 }
 
 .navbar {
@@ -9,36 +10,127 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: rgba(220, 231, 190, 0.886);
-}
+  //background-color: rgb(252, 238, 10);
+  background-color: black;
 
-.navbar-title {
-  margin-bottom: 30px;
-  background-color: red;
-}
+  .navbar-icon {
+    border: none;
+    margin-right: 5px;
+    width: 24px;
+    height: 24px;
+  }
 
-.navbar-icon {
-  margin-right: 5px;
-  width: 24px;
-  height: 24px;
-}
+  .active {
+    border: none;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    text-decoration: underline;
+  }
 
-.active {
-  font-weight: bold;
-  color: rgb(0, 0, 0);
-  background-color: rgba(235, 187, 67, 0.786);
-}
+  .logo {
+    margin: 10px;
+    color: white;
+    font-family: "Permanent Marker", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 36px;
+  }
 
-.logo {
-  margin: 10px;
-  font-family: "Permanent Marker", cursive;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 36px;
-}
+  .center-container {
+    display: flex;
+  }
 
-@media (max-width: 801px) {
+  .nav-menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
   .nav-text {
+    color: white;
+  }
+
+  .navbar-icon {
+    color: white;
+  }
+
+
+  .login-button{
+    display: flex;
+  }
+
+  .mobile-menu {
     display: none;
   }
+
+  .menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+
+  .menu-toggle mat-icon {
+    font-size: 24px;
+  }
+
+  .mobile-menu-content {
+    display: none;
+    background-color: #f9f9f9;
+    position: absolute;
+    top: 60px;
+    right: 0; /* Menu na prawej stronie */
+    z-index: 1000;
+  }
+  
+  .mobile-menu-content.active {
+    display: block;
+  }
+
+  @media (max-width: 1147px) {
+    .nav-text {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 777px) {
+    .nav-menu {
+      display: none;
+    }
+
+    .login-button{
+      display: none;
+    }
+
+    .mobile-menu {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end; /* Przycisk po prawej stronie */
+    }
+  
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+    }
+  
+    .menu-toggle mat-icon {
+      font-size: 24px;
+    }
+  
+    .mobile-menu-content {
+      display: none;
+      background-color: #f9f9f9;
+      position: absolute;
+      top: 60px;
+      right: 0; /* Menu na prawej stronie */
+      z-index: 1000;
+    }
+    
+    .mobile-menu-content.active {
+      display: block;
+    }
+  }
 }
+

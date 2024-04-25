@@ -10,11 +10,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { PhotoDialogComponent } from './photo-dialog/photo-dialog.component';
 
 @NgModule({
   declarations: [
     HomePageComponent,
     NavigationComponent,
+    PhotoDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
   exports: [
     HomePageComponent,
     NavigationComponent,
+    PhotoDialogComponent
   ]
 })
 export class SharedModule { }

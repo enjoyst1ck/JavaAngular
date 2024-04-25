@@ -4,7 +4,7 @@ import { EventApi } from 'src/app/api/event.api';
 import { EventDto } from 'src/app/dtos/eventDto';
 import { MatDialog } from '@angular/material/dialog';
 import { EventFormComponent } from './event-form/event-form.component';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -43,9 +43,11 @@ export class EventService implements OnInit, OnDestroy {
     this.form = this.fb.group({
       isNew: new FormControl(isNew),
       id: new FormControl(dto?.id),
+      name: new FormControl(dto?.name),
+      description: new FormControl(dto?.description),
       startDate: new FormControl(dto?.startDate),
       endDate: new FormControl(dto?.endDate),
-      description: new FormControl(dto?.description)
+      //attachments: new FormControl(dto?.attachments)
     });
   }
 
@@ -54,7 +56,7 @@ export class EventService implements OnInit, OnDestroy {
 
     const dialogRef = this.dialog.open(EventFormComponent, {
       width: '580px',
-      height: '500px',
+      height: '525px',
       data: { 
         form: this.form,
         isNew: isNew 
@@ -64,6 +66,7 @@ export class EventService implements OnInit, OnDestroy {
       if (result && isNew) {
         this._api.insert(undefined, result).subscribe(event => {
           if (event) {
+            console.log(event);
             if (event != null) {
               this.dataUpdated.next();
             }

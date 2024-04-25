@@ -55,6 +55,7 @@ export class EventApi extends GenericApi<EventDto> {
   }
 
   override insert(controllerName: string = this.controllerName, event: EventDto): Observable<EventDto[]> {
+    console.log(event);
     return super.insert(this.controllerName, event);
   }
 

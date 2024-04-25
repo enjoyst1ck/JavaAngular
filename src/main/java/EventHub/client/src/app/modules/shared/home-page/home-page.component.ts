@@ -8,7 +8,7 @@ import { EventDto } from 'src/app/dtos/eventDto';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
-  public events: EventDto[] = [];
+  public events!: EventDto[];
 
   constructor(private _service: SharedService) {
   }
@@ -20,8 +20,12 @@ export class HomePageComponent {
   private fetchData() {
     this._service.getFiveLastEvents().subscribe(data => {
       this.events = data;
+
+  
       console.log(this.events)
     });
+
+    
   }
 
   klikniecie() {

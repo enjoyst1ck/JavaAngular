@@ -10,12 +10,19 @@ import java.util.List;
 
 @Entity
 public class Event implements IModel {
+    @TableGenerator(
+            name = "eventGenerator",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy=GenerationType.TABLE,
+            generator="eventGenerator")
     private Integer id;
+    private String name;
+    private String description;
     private Date startDate;
     private Date endDate;
-    private String description;
     @JsonIgnoreProperties(value = {"event"})
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Attachment> attachments;
@@ -51,6 +58,22 @@ public class Event implements IModel {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -65,14 +88,6 @@ public class Event implements IModel {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public List<Attachment> getAttachments() {

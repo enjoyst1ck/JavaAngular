@@ -13,7 +13,7 @@
 <div mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="update()">
     <div class="row">
-      <mat-form-field class="col mx-2">
+      <mat-form-field class="col my-2">
         <mat-label>Choose a start date</mat-label>
         <input matInput formControlName="startDate" [matDatepicker]="startPicker" required>
         <mat-hint>DD/MM/YYYY</mat-hint>
@@ -21,7 +21,7 @@
         <mat-datepicker #startPicker></mat-datepicker>
       </mat-form-field>
       
-      <mat-form-field class="col mx-2">
+      <mat-form-field class="col my-2">
         <mat-label>Choose a end date</mat-label>
         <input matInput formControlName="endDate" [matDatepicker]="endPicker" required>
         <mat-hint>DD/MM/YYYY</mat-hint>
@@ -29,12 +29,27 @@
         <mat-datepicker #endPicker></mat-datepicker>
       </mat-form-field>
     </div>
-      
-    <mat-form-field class="col-12 my-5">
-      <mat-label>Leave a comment</mat-label>
+    
+    <mat-form-field class="col-12 mt-2">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" required/>
+    </mat-form-field>
+    
+    <mat-form-field class="col-12 mt-2">
+      <mat-label>Description</mat-label>
       <textarea matInput formControlName="description" rows="4" required></textarea>
     </mat-form-field>
 
+    <div class="mb-3">
+      <label for="formFileMultiple" class="form-label">Select attachments (photos)</label>
+      <div class="d-flex flex-row">
+        <input class="form-control" type="file" id="formFileMultiple" accept="image/*" (change)="onFileChange($event)" multiple>
+        <button class="btn" (click)="clear()">CLEAR</button>
+      </div>
+    </div>
+    <button class="btn mr-3" *ngFor="let attachment of attachments; let i = index" (click)="openPhoto(attachment.image, attachment.fileName)">
+      {{attachment.fileName}}
+    </button>
     <div mat-dialog-actions class="leave-buttons">
       <button mat-button class="btn mr-3" (click)="dialogRef.close()">Cancel</button>
       <button mat-flat-button class="btn" type="submit">Submit</button>

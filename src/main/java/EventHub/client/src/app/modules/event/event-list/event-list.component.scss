@@ -2,6 +2,11 @@ body {
   background-color: white;
 }
 
+.header {
+height: 100px;
+width: 100%;
+}
+
 table {
   width: 100%;
   margin-bottom: 5px;
@@ -17,6 +22,7 @@ table {
 }
 
 .update-button {
-  margin-right: 30px;
-  margin-top: 30px;
+  margin: 10px 30px;
+  height: 80%;
+  width: 120px;
 }
