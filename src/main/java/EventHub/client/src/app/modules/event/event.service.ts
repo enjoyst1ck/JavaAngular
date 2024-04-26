@@ -5,6 +5,7 @@ import { EventDto } from 'src/app/dtos/eventDto';
 import { MatDialog } from '@angular/material/dialog';
 import { EventFormComponent } from './event-form/event-form.component';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class EventService implements OnInit, OnDestroy {
   dataUpdatedSignal() {
     return this.dataUpdated$;
   }
-  constructor(private _api: EventApi, public fb: FormBuilder, public dialog: MatDialog) { }
+  constructor(private _api: EventApi, public fb: FormBuilder, public dialog: MatDialog, public http: HttpClient) { }
 
   ngOnInit(): void {
   }
@@ -47,7 +48,8 @@ export class EventService implements OnInit, OnDestroy {
       description: new FormControl(dto?.description),
       startDate: new FormControl(dto?.startDate),
       endDate: new FormControl(dto?.endDate),
-      //attachments: new FormControl(dto?.attachments)
+      attachments: new FormControl(dto?.attachments),
+      stuff: new FormControl(dto?.stuff)
     });
   }
 
@@ -64,17 +66,23 @@ export class EventService implements OnInit, OnDestroy {
     }).afterClosed().subscribe(result => {     
       console.log(result);
       if (result && isNew) {
-        this._api.insert(undefined, result).subscribe(event => {
-          if (event) {
-            console.log(event);
-            if (event != null) {
+        //something not working
+        /*this._api.insert(undefined, result).subscribe(newEvent => {
+          if (newEvent) {
+            console.log("udalo sie dodac obiekt")
+          }
+        })*/
+
+        this.http.post<EventDto[]>("http://localhost:8080/events/addEvent", result).subscribe(eventList => {
+          if (eventList) {
+            console.log("udalo sie dodac obiekt")
               this.dataUpdated.next();
-            }
-            
-          }})
+          }
+        })
       }
       else if (result && !isNew) {
         this._api.update(undefined, result).subscribe(events => {
+          console.log("udalo sie zaaktualizowac obiekt")
         this.dataUpdated.next();
         })
       };

@@ -7,8 +7,14 @@ import java.util.List;
 
 @Entity
 public class Artist implements IModel {
+    @TableGenerator(
+            name = "artistGenerator",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy=GenerationType.TABLE,
+            generator="artistGenerator")
     private Integer id;
     private String name;
 

@@ -1,13 +1,14 @@
 package EventHub.controllers;
 
-import EventHub.models.Organizer;
-import EventHub.services.OrganizerService;
+import EventHub.models.Stuff;
+import EventHub.services.StuffService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("organizers")
+@RequestMapping("stuff")
 @CrossOrigin(origins = "http://localhost:4200")
-public class OrganizerController extends GenericController<Organizer, OrganizerService> {
+public class StuffController extends GenericController<Stuff, StuffService> {
+
 }

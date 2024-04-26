@@ -7,7 +7,7 @@ const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'events', loadChildren: () => import('./modules/event/event.module').then(m => m.EventModule),/* canActivate: [AuthGuard], data: {role: 'ADMIN'}*/ },
   { path: 'artists', loadChildren: () => import('./modules/artist/artist.module').then(m => m.ArtistModule) },
-  { path: 'organizers', loadChildren: () => import('./modules/organizer/organizer.module').then(m => m.OrganizerModule) },
+  { path: 'stuff', loadChildren: () => import('./modules/stuff/stuff.module').then(m => m.StuffModule) },
   { path: 'reviews', loadChildren: () => import('./modules/review/review.module').then(m => m.ReviewModule) },
   { path: '', loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule) },
 ];

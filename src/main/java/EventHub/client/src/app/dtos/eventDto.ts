@@ -1,5 +1,7 @@
+
+import { ArtistDto } from "./artistDto";
 import { AttachmentDto } from "./attachmentDto";
-import { FileHandle } from "./fileHandle";
+import { StuffDto } from "./stuffDto";
 
 export class EventDto {
   id: number = 0;
@@ -7,6 +9,8 @@ export class EventDto {
   description!: string;
   startDate!: Date;
   endDate!: Date;
+  artists: ArtistDto[] = [];
   attachments: AttachmentDto[] = [];
+  stuff: StuffDto[] = [];
   static CLASS_NAME: string = 'EventDto';
 }

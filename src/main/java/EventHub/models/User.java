@@ -14,8 +14,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
+    @TableGenerator(
+            name = "userGenerator",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy=GenerationType.TABLE,
+            generator="userGenerator")
     private Long id;
     private String username;
     private String password;

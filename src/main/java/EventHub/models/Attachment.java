@@ -6,8 +6,14 @@ import jakarta.persistence.*;
 
 @Entity
 public class Attachment implements IModel {
+    @TableGenerator(
+            name = "attachmentGenerator",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy=GenerationType.TABLE,
+            generator="attachmentGenerator")
     private Integer id;
     private String fileName;
     @Lob
@@ -26,8 +32,8 @@ public class Attachment implements IModel {
     @JsonIgnore
     @JsonIgnoreProperties(value = {"attachments"})
     @ManyToOne(optional = true)
-    @JoinColumn(name = "organizer_id")
-    private Organizer organizer;
+    @JoinColumn(name = "stuff_id")
+    private Stuff stuff;
 
     @Override
     public Integer getId() {
@@ -71,11 +77,11 @@ public class Attachment implements IModel {
         this.event = event;
     }
 
-    public Organizer getOrganizer() {
-        return organizer;
+    public Stuff getStuff() {
+        return stuff;
     }
 
-    public void setOrganizer(Organizer organizer) {
-        this.organizer = organizer;
+    public void setStuff(Stuff stuff) {
+        this.stuff = stuff;
     }
 }

@@ -1,5 +1,5 @@
 export class AttachmentDto {
-  id: number = 0;
+  id?: number;
   fileName!: string;
   image!: string;
   CLASS_NAME: string = 'AttachmentDto';

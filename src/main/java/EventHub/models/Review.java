@@ -7,8 +7,14 @@ import java.util.Date;
 
 @Entity
 public class Review implements IModel {
+    @TableGenerator(
+            name = "reviewGenerator",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy=GenerationType.TABLE,
+            generator="reviewGenerator")
     private Integer id;
     private Date date;
     private String comment;

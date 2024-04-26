@@ -9,10 +9,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from './modules/auth/auth.module';
+import { StuffModule } from './modules/stuff/stuff.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -21,7 +22,8 @@ import { AuthModule } from './modules/auth/auth.module';
     MatSlideToggleModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AuthModule
+    AuthModule,
+    StuffModule
   ],
   providers: [
     EventApi

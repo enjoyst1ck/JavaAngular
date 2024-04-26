@@ -7,8 +7,14 @@ import java.util.List;
 
 @Entity
 public class Venue implements IModel {
+    @TableGenerator(
+            name = "venueGenerator",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy=GenerationType.TABLE,
+            generator="venueGenerator")
     private Integer id;
     private String name;
     private String description;

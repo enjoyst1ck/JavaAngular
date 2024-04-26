@@ -41,12 +41,13 @@ public class Event implements IModel {
                inverseJoinColumns = {@JoinColumn(name = "id_artist")})
     private List<Artist> artists;
 
+    @JsonIgnore
     @JsonIgnoreProperties(value = {"events"})
     @ManyToMany
     @JoinTable(name = "eventOrganizer",
                joinColumns = {@JoinColumn(name = "id_event")},
-               inverseJoinColumns = {@JoinColumn(name = "id_organizer")})
-    private List<Organizer> organizers;
+               inverseJoinColumns = {@JoinColumn(name = "id_stuff")})
+    private List<Stuff> stuff;
 
     @Override
     public Integer getId() {
@@ -122,11 +123,11 @@ public class Event implements IModel {
         this.artists = artists;
     }
 
-    public List<Organizer> getOrganizers() {
-        return organizers;
+    public List<Stuff> getStuff() {
+        return stuff;
     }
 
-    public void setOrganizers(List<Organizer> organizers) {
-        this.organizers = organizers;
+    public void setStuff(List<Stuff> stuff) {
+        this.stuff = stuff;
     }
 }

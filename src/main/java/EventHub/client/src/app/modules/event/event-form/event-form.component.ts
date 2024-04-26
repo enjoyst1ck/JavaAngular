@@ -5,6 +5,7 @@ import { AttachmentDto } from 'src/app/dtos/attachmentDto';
 import { PhotoDialogComponent } from '../../shared/photo-dialog/photo-dialog.component';
 import { VenueDto } from 'src/app/dtos/venueDto';
 import { ArtistDto } from 'src/app/dtos/artistDto';
+import { StuffDto } from 'src/app/dtos/stuffDto';
 
 @Component({
   selector: 'app-event-form',
@@ -15,8 +16,10 @@ export class EventFormComponent {
   @ViewChild('picker') picker: any;
 
   attachments: AttachmentDto[] = [];
+  stuff: StuffDto[] = []
   venue?: VenueDto;
-  artists?: ArtistDto;
+  artists: ArtistDto[] = [];
+
 
   form: FormGroup;
   isNew: boolean;
@@ -36,11 +39,14 @@ export class EventFormComponent {
   update() {
     if (this.form.valid) {
       const formData = this.form.value;
-      formData.attachments = null;
-      formData.id = 15;
       formData.venue = null;
-      formData.artists = null;
+      formData.artists = this.artists;
+      formData.stuff = this.stuff;
+      formData.attachments = this.attachments;
 
+
+      console.log("formData")
+      console.log(formData);
 
       this.dialogRef.close(formData);
     }
@@ -51,23 +57,31 @@ export class EventFormComponent {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const reader = new FileReader();
-
+  
       reader.onloadend = () => {
-        const base64 = reader.result as string;
+        const base64DataUrl = reader.result as string;
+        let base64: string;
+  
+        if (base64DataUrl.startsWith('data:image/')) {
+          base64 = base64DataUrl.split(',')[1];
+        } else {
+          console.error(`It's not base64 format`);
+          return;
+        }
+  
         const photo: AttachmentDto = new AttachmentDto();
-        photo.id = i + 1; // Ustawiasz tu swoje wartości
-        photo.fileName = files[i].name; // Ustawiasz tu swoje wartości
+        photo.fileName = file.name;
         photo.image = base64;
+  
         this.attachments.push(photo);
       };
-
-    reader.readAsDataURL(file);
-  }
+  
+      reader.readAsDataURL(file);
+    }
   }
   
   openPhoto(base64: string, filename: string): void {
-    console.log(base64);
-    const dialogRef = this.dialog.open(PhotoDialogComponent, {
+    this.dialog.open(PhotoDialogComponent, {
       data: { image: base64, filename: filename }
     });
   }
