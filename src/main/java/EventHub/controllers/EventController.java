@@ -25,4 +25,10 @@ public class EventController extends GenericController<Event, EventService> {
         //service.insert(object);
         return service.insertEvent(object);
     }
+
+    @PutMapping("/editEvent")
+    public Event editEvent(@RequestBody Event object) {
+        //service.insert(object);
+        return object;
+    }
 }

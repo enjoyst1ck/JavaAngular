@@ -17,13 +17,14 @@ export class EventListComponent implements OnInit, AfterViewInit, OnDestroy {
   
   private _sub?: Subscription;
 
-  displayedColumns: string[] = ['Id', "Start Date", "End Date", "Description"]
+  displayedColumns: string[] = ['Id', "Start Date", "End Date", "Description", "Edit"]
   dataSource = new MatTableDataSource<EventDto>();
 
   pageSizeOptions: number[] = [1, 2, 4, 8];
   pageSize: number = 2;
   
-  constructor(private _service: EventService) {this.fetchData();
+  constructor(private _service: EventService) {
+    this.fetchData();
   }
 
   ngOnInit(): void {
@@ -59,13 +60,15 @@ export class EventListComponent implements OnInit, AfterViewInit, OnDestroy {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  deleteEvent(id: number) {
+  deleteItem(id: number) {
     this._service.deleteById(id).subscribe(() => {
       this.fetchData();
     });
   }
-
+  
   openDialog(isNew: boolean, eventDto?: EventDto) {
+    console.log("eventDto")
+    console.log(eventDto)
     this._service.openDialog(isNew, eventDto);
   }
 

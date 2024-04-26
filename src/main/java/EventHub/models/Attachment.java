@@ -17,6 +17,7 @@ public class Attachment implements IModel {
     private Integer id;
     private String fileName;
     @Lob
+    @Column(name = "image", columnDefinition = "LONGBLOB")
     @Basic(fetch = FetchType.LAZY)
     private byte[] image;
     @JsonIgnore

@@ -42,7 +42,6 @@ export class EventFormComponent {
       formData.venue = null;
       formData.artists = this.artists;
       formData.stuff = this.stuff;
-      formData.attachments = this.attachments;
 
 
       console.log("formData")
@@ -73,7 +72,11 @@ export class EventFormComponent {
         photo.fileName = file.name;
         photo.image = base64;
   
-        this.attachments.push(photo);
+        this.form.value.attachments.push(photo);
+        //WARNING
+        //tutaj obsluzyc zeby mozna usuwac zdjecia z tej tablicy!!!
+        
+        //this.attachments.push(photo);
       };
   
       reader.readAsDataURL(file);

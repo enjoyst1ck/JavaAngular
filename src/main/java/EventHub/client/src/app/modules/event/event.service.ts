@@ -41,6 +41,8 @@ export class EventService implements OnInit, OnDestroy {
   }
 
   initCreateForm(isNew: boolean, dto?: EventDto) {
+    console.log("dto")
+    console.log(dto)
     this.form = this.fb.group({
       isNew: new FormControl(isNew),
       id: new FormControl(dto?.id),
@@ -48,8 +50,8 @@ export class EventService implements OnInit, OnDestroy {
       description: new FormControl(dto?.description),
       startDate: new FormControl(dto?.startDate),
       endDate: new FormControl(dto?.endDate),
-      attachments: new FormControl(dto?.attachments),
-      stuff: new FormControl(dto?.stuff)
+      stuff: new FormControl(dto?.stuff),
+      attachments: this.fb.array(dto?.attachments ? dto?.attachments : [])
     });
   }
 
@@ -73,7 +75,10 @@ export class EventService implements OnInit, OnDestroy {
           }
         })*/
 
-        this.http.post<EventDto[]>("http://localhost:8080/events/addEvent", result).subscribe(eventList => {
+        this.http.post<EventDto>("http://localhost:8080/events/addEvent", result).subscribe(eventList => {
+          console.log("po wywolaniu i sprawdzac co to eventlist:")
+          console.log(eventList);
+
           if (eventList) {
             console.log("udalo sie dodac obiekt")
               this.dataUpdated.next();
@@ -83,6 +88,9 @@ export class EventService implements OnInit, OnDestroy {
       else if (result && !isNew) {
         this._api.update(undefined, result).subscribe(events => {
           console.log("udalo sie zaaktualizowac obiekt")
+          console.log("to co sie zwrocilo to:")
+          console.log(events);
+
         this.dataUpdated.next();
         })
       };
