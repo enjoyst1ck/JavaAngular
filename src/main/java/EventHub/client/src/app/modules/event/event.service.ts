@@ -4,8 +4,11 @@ import { EventApi } from 'src/app/api/event.api';
 import { EventDto } from 'src/app/dtos/eventDto';
 import { MatDialog } from '@angular/material/dialog';
 import { EventFormComponent } from './event-form/event-form.component';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ArtistApi } from 'src/app/api/artist.api';
+import { StuffApi } from 'src/app/api/stuff.api';
+import { venueApi } from 'src/app/api/venue.api';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +22,30 @@ export class EventService implements OnInit, OnDestroy {
   dataUpdatedSignal() {
     return this.dataUpdated$;
   }
-  constructor(private _api: EventApi, public fb: FormBuilder, public dialog: MatDialog, public http: HttpClient) { }
+
+  constructor(private _api: EventApi, 
+              private _artistApi: ArtistApi,
+              private _stuffApi: StuffApi,
+              private _venueApi: venueApi, 
+              public fb: FormBuilder, public dialog: MatDialog, public http: HttpClient) { }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
     throw new Error('Method not implemented.');
+  }
+
+  getAllArtist() {
+    return this._artistApi.getAll();
+  }
+
+  getAllStuff() {
+    return this._stuffApi.getAll();
+  }
+
+  getAllVenues() {
+    return this._venueApi.getAll();
   }
 
   getAllEvents(): Observable<EventDto[]> {
@@ -41,26 +61,29 @@ export class EventService implements OnInit, OnDestroy {
   }
 
   initCreateForm(isNew: boolean, dto?: EventDto) {
-    console.log("dto")
-    console.log(dto)
     this.form = this.fb.group({
       isNew: new FormControl(isNew),
       id: new FormControl(dto?.id),
-      name: new FormControl(dto?.name),
-      description: new FormControl(dto?.description),
-      startDate: new FormControl(dto?.startDate),
-      endDate: new FormControl(dto?.endDate),
-      stuff: new FormControl(dto?.stuff),
-      attachments: this.fb.array(dto?.attachments ? dto?.attachments : [])
+      name: new FormControl(dto?.name, Validators.required),
+      description: new FormControl(dto?.description, Validators.required),
+      startDate: new FormControl(dto?.startDate, Validators.required),
+      endDate: new FormControl(dto?.endDate, Validators.required),
+      venue: new FormControl(dto?.venue),
+      artists: new FormControl(dto?.artists ? dto.artists : []),
+      stuff: new FormControl(dto?.stuff ? dto?.stuff : []),
+      attachments: new FormControl(dto?.attachments ? dto?.attachments : []),
     });
   }
 
   openDialog(isNew: boolean, event?: EventDto) {
     this.initCreateForm(isNew, event);
 
-    const dialogRef = this.dialog.open(EventFormComponent, {
-      width: '580px',
-      height: '525px',
+    this.dialog.open(EventFormComponent, {
+      width: '60%',
+      maxWidth: '60vw',
+      height: '560px',
+
+      disableClose: true,
       data: { 
         form: this.form,
         isNew: isNew 
@@ -68,17 +91,9 @@ export class EventService implements OnInit, OnDestroy {
     }).afterClosed().subscribe(result => {     
       console.log(result);
       if (result && isNew) {
-        //something not working
-        /*this._api.insert(undefined, result).subscribe(newEvent => {
-          if (newEvent) {
-            console.log("udalo sie dodac obiekt")
-          }
-        })*/
-
         this.http.post<EventDto>("http://localhost:8080/events/addEvent", result).subscribe(eventList => {
           console.log("po wywolaniu i sprawdzac co to eventlist:")
           console.log(eventList);
-
           if (eventList) {
             console.log("udalo sie dodac obiekt")
               this.dataUpdated.next();
@@ -86,7 +101,7 @@ export class EventService implements OnInit, OnDestroy {
         })
       }
       else if (result && !isNew) {
-        this._api.update(undefined, result).subscribe(events => {
+        this._api.updateEvent(undefined, result).subscribe(events => {
           console.log("udalo sie zaaktualizowac obiekt")
           console.log("to co sie zwrocilo to:")
           console.log(events);

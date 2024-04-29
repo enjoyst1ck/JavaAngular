@@ -1,13 +1,13 @@
-<div>
+<div *ngIf="data.image">
   <div class="d-flex flex-row justify-content-between">
     <div class="text-align-center align-items-center">
-      <p class="text-align-center">{{file}}</p>
+      <p class="text-align-center">{{ data.filename }}</p>
     </div>
     <button (click)="close()">
       <mat-icon style="color: red; background-color: transparent;">close</mat-icon>
     </button>
   </div>
   <div *ngIf="byte64" style="height: auto; width: 100%;">
-    <img [src]="byte64" style="max-width: 100%; max-height: 100%;" alt="Photo">
+    <img [src]="data.image" style="max-width: 100%; max-height: 100%;" alt="Photo">
   </div>
 </div>

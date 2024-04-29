@@ -18,6 +18,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { StuffModule } from '../stuff/stuff.module';
+import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { StuffModule } from '../stuff/stuff.module';
     MatFormFieldModule,
     MatDatepickerModule,
     MatButtonModule,
-    StuffModule
+    StuffModule,
+    MatSelectModule,
+    MatListModule
   ]
 })
 export class EventModule { }

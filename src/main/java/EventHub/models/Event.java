@@ -41,7 +41,6 @@ public class Event implements IModel {
                inverseJoinColumns = {@JoinColumn(name = "id_artist")})
     private List<Artist> artists;
 
-    @JsonIgnore
     @JsonIgnoreProperties(value = {"events"})
     @ManyToMany
     @JoinTable(name = "eventOrganizer",

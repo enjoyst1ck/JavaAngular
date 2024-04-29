@@ -3,7 +3,6 @@ import { EventDto } from "../dtos/eventDto";
 import { GenericApi } from "./generic.api";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
-import { AuthService } from "../modules/auth/auth.service";
 import { LoginDto } from "../dtos/loginDto";
 
 @Injectable({
@@ -18,8 +17,6 @@ export class EventApi extends GenericApi<EventDto> {
   }
 
   chwilowe(dto: LoginDto): Observable<string> {
-    console.log(dto);
-
     const body = {
       username: dto.username,
       password: dto.password
@@ -58,11 +55,8 @@ export class EventApi extends GenericApi<EventDto> {
     return this.http.post<EventDto[]>("http://localhost:8080/events/addEvent", { body: event, headers: headers });
   }
 
-  override update(controllerName: string = this.controllerName, event: EventDto, headers?: HttpHeaders): Observable<EventDto[]> {
-    console.log("to dto jest wysy;ane")
-    console.log(event)
-    return this.http.post<EventDto[]>("http://localhost:8080/events/editEvent", { body: event, headers: headers });
-    //return super.update(this.controllerName, event);
+  updateEvent(controllerName: string = this.controllerName, event: EventDto, headers?: HttpHeaders): Observable<boolean> {
+    return this.http.put<boolean>("http://localhost:8080/events/editEvent", event, { headers: headers });
   }
 
   override delete(controllerName: string = this.controllerName, id: number): Observable<void> {

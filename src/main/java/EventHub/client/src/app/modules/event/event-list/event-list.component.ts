@@ -42,18 +42,6 @@ export class EventListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ngAfterViewInit();
       }
     })
-
-    /*this._subs.push(this._service.getAllEvents().subscribe(data => {
-      if(data) {
-        this.dataSource = new MatTableDataSource<EventDto>(data);
-        this.ngAfterViewInit();
-      }
-    }));*/
-
-    /*this._subs.push(this._service.dataUpdated$.subscribe(() => {
-      this.fetchData();
-    }));*/
-
   }
   
   private compare (a: any, b: any, isAsc: boolean) {
@@ -67,8 +55,6 @@ export class EventListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   openDialog(isNew: boolean, eventDto?: EventDto) {
-    console.log("eventDto")
-    console.log(eventDto)
     this._service.openDialog(isNew, eventDto);
   }
 

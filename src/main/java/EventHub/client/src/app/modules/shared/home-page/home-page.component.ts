@@ -20,20 +20,6 @@ export class HomePageComponent {
   private fetchData() {
     this._service.getFiveLastEvents().subscribe(data => {
       this.events = data;
-
-  
-      console.log(this.events)
     });
-
-    
-  }
-
-  klikniecie() {
-    this.fetchData();
-    console.log(this.events);
-  }
-
-  range(start: number, end: number) {
-    
   }
 }

@@ -2,6 +2,7 @@
 import { ArtistDto } from "./artistDto";
 import { AttachmentDto } from "./attachmentDto";
 import { StuffDto } from "./stuffDto";
+import { VenueDto } from "./venueDto";
 
 export class EventDto {
   id: number = 0;
@@ -9,6 +10,7 @@ export class EventDto {
   description!: string;
   startDate!: Date;
   endDate!: Date;
+  venue?: VenueDto;
   artists: ArtistDto[] = [];
   attachments: AttachmentDto[] = [];
   stuff: StuffDto[] = [];

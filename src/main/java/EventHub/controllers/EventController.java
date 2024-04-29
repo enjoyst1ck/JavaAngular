@@ -27,8 +27,7 @@ public class EventController extends GenericController<Event, EventService> {
     }
 
     @PutMapping("/editEvent")
-    public Event editEvent(@RequestBody Event object) {
-        //service.insert(object);
-        return object;
+    public boolean editEvent(@RequestBody Event object) {
+        return service.editEvent(object);
     }
 }
