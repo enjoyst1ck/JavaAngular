@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, ReplaySubject, map, of } from 'rxjs';
 import { EventApi } from 'src/app/api/event.api';
+import { UserApi } from 'src/app/api/user.api';
 import { LoginDto } from 'src/app/dtos/loginDto';
 import { RegisterDto } from 'src/app/dtos/registerDto';
 @Injectable({
@@ -12,7 +13,7 @@ export class AuthService {
   private _username!: string;
   private _password!: string;
 
-  constructor(private _http: HttpClient, private _eventApi: EventApi) { }
+  constructor(private _api: UserApi, private _router: Router) { }
 
   setCredentials(username: string, password: string) {
     this._username = username;
@@ -23,19 +24,36 @@ export class AuthService {
     return 'Basic ' + btoa(this._username + ':' + this._password);
   }*/
 
-  login(dto: LoginDto) {        
-    this._http.put<string>("http://localhost:8080/account/login", dto).subscribe(
-      res => {
-        console.log(res);
-        return res;
-      },
-      error => {
-        console.error(error);
-      }
-    );
+  canActivate(): boolean {
+    if (localStorage.getItem("auth")) {
+      return true
+    } 
+    else {
+      //this._router.navigate(['/login']);
+      return false
+    }
+  }
+  
+  isAuthenticated(expectedRole: String) {
+    const authToken = localStorage.getItem('auth');
+    const role = authToken?.split(':')[2];
+    if (expectedRole === role) {
+      return true;
+    }
+    return false;
   }
 
-  register(dto: RegisterDto) {        
+  login(dto: LoginDto) {        
+    this._api.login(dto).subscribe(data => {
+      
+        //const data = res.split(':');
+        console.log(data);
+        localStorage.setItem("auth", data);
+        return data;
+    });
+  }
+
+  /*register(dto: RegisterDto) {        
     this._http.put<string>("http://localhost:8080/account/register", dto).subscribe(
       res => {
         console.log(res);
@@ -45,5 +63,5 @@ export class AuthService {
         console.error(error);
       }
     );
-  }
+  }*/
 }

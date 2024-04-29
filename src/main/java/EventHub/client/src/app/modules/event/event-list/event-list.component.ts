@@ -17,18 +17,20 @@ export class EventListComponent implements OnInit, AfterViewInit, OnDestroy {
   
   private _sub?: Subscription;
 
-  displayedColumns: string[] = ['Id', "Start Date", "End Date", "Description", "Edit"]
+  displayedColumns: string[] = ['Id', "Name", "Start Date", "End Date", "Description", "Edit"]
   dataSource = new MatTableDataSource<EventDto>();
 
   pageSizeOptions: number[] = [1, 2, 4, 8];
-  pageSize: number = 2;
+  pageSize: number = 8;
   
   constructor(private _service: EventService) {
-    this.fetchData();
+    
   }
 
   ngOnInit(): void {
-    
+    this._service.dataUpdated$.subscribe(() => {
+      this.fetchData();
+    })
   }
   
   ngOnDestroy(): void {
@@ -36,7 +38,7 @@ export class EventListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private fetchData() {
-    this._service.getAllEvents().subscribe(data => {
+    this._sub = this._service.getAllEvents().subscribe(data => {
       if(data) {
         this.dataSource = new MatTableDataSource<EventDto>(data);
         this.ngAfterViewInit();

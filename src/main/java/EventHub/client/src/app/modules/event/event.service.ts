@@ -17,12 +17,11 @@ export class EventService implements OnInit, OnDestroy {
   form?: FormGroup;
   private dataUpdated: BehaviorSubject<void> = new BehaviorSubject<void>(undefined);
   dataUpdated$ = this.dataUpdated.asObservable();
-
-
-  dataUpdatedSignal() {
-    return this.dataUpdated$;
+  
+  get dataUpdate() {
+    return this.dataUpdated.asObservable();
   }
-
+  
   constructor(private _api: EventApi, 
               private _artistApi: ArtistApi,
               private _stuffApi: StuffApi,
@@ -88,25 +87,18 @@ export class EventService implements OnInit, OnDestroy {
         form: this.form,
         isNew: isNew 
     }
-    }).afterClosed().subscribe(result => {     
-      console.log(result);
+    }).afterClosed().subscribe(result => {
       if (result && isNew) {
-        this.http.post<EventDto>("http://localhost:8080/events/addEvent", result).subscribe(eventList => {
-          console.log("po wywolaniu i sprawdzac co to eventlist:")
-          console.log(eventList);
+        this._api.insert(undefined, result).subscribe(eventList => {
           if (eventList) {
-            console.log("udalo sie dodac obiekt")
-              this.dataUpdated.next();
+            this.dataUpdated.next();
           }
         })
       }
       else if (result && !isNew) {
-        this._api.updateEvent(undefined, result).subscribe(events => {
-          console.log("udalo sie zaaktualizowac obiekt")
-          console.log("to co sie zwrocilo to:")
-          console.log(events);
-
-        this.dataUpdated.next();
+        this._api.updateEvent(undefined, result).subscribe(eventList => {
+          if (eventList)
+            this.dataUpdated.next();
         })
       };
     });

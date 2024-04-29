@@ -5,7 +5,7 @@ import { AuthGuard } from './modules/auth/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
-  { path: 'events', loadChildren: () => import('./modules/event/event.module').then(m => m.EventModule),/* canActivate: [AuthGuard], data: {role: 'ADMIN'}*/ },
+  { path: 'events', loadChildren: () => import('./modules/event/event.module').then(m => m.EventModule), canActivate: [AuthGuard], data: {expectedRole: 'ROLE_ORGANIZER'} },
   { path: 'artists', loadChildren: () => import('./modules/artist/artist.module').then(m => m.ArtistModule) },
   { path: 'stuff', loadChildren: () => import('./modules/stuff/stuff.module').then(m => m.StuffModule) },
   { path: 'reviews', loadChildren: () => import('./modules/review/review.module').then(m => m.ReviewModule) },

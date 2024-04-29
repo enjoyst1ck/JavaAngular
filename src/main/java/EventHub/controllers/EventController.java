@@ -1,5 +1,6 @@
 package EventHub.controllers;
 
+import EventHub.models.Attachment;
 import EventHub.models.Event;
 import EventHub.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class EventController extends GenericController<Event, EventService> {
     }
 
     @PutMapping("/editEvent")
-    public boolean editEvent(@RequestBody Event object) {
+    public List<Event> editEvent(@RequestBody Event object) {
         return service.editEvent(object);
     }
 }

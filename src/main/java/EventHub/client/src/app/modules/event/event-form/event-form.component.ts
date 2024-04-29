@@ -129,7 +129,10 @@ export class EventFormComponent implements OnInit {
   }
 
   deleteAttachment(attachment: AttachmentDto) {
-    this.form.value.attachments.pop(attachment);
+    const index = this.form.value.attachments.indexOf(attachment);
+    if (index !== -1) {
+        this.form.value.attachments.splice(index, 1);
+    }
   }
 
   clear() {

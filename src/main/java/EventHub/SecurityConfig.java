@@ -1,11 +1,14 @@
 package EventHub;
 
 import EventHub.helpers.RestAuthenticationEntryPoint;
+import EventHub.models.User;
 import EventHub.services.UserService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -97,14 +100,14 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void establishUsers()
-//    {
+    @EventListener(ApplicationReadyEvent.class)
+    public void establishUsers()
+    {
 //        userDetailsService.saveUser(new User("michal", passwordEncoder().encode("michal"), "ROLE_USER"));
 //        userDetailsService.saveUser(new User("jan", passwordEncoder().encode("jan"), "ROLE_USER"));
 //        userDetailsService.saveUser(new User("admin", passwordEncoder().encode("admin"), "ROLE_ADMIN"));
 //        userDetailsService.saveUser(new User("kamil", passwordEncoder().encode("kamil"), "ROLE_ORGANIZER"));
 //        userDetailsService.saveUser(new User("wacek", passwordEncoder().encode("wacek"), "ROLE_USER"));
 //        userDetailsService.saveUser(new User("kuba", passwordEncoder().encode("kuba"), "ROLE_ORGANIZER"));
-//    }
+    }
 }

@@ -2,6 +2,7 @@ package EventHub.services;
 
 import EventHub.dtos.LoginDto;
 import EventHub.dtos.RegisterDto;
+import EventHub.models.User;
 import EventHub.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,18 +27,20 @@ public class UserService implements UserDetailsService {
     {
         return new BCryptPasswordEncoder();
     }
-    public Boolean login(LoginDto loginDto) {
+    public String login(LoginDto loginDto) {
         UserDetails user = loadUserByUsername(loginDto.getUsername());
         if (user != null) {
             String hashedPassword = user.getPassword();
             if (hashedPassword != null) {
                 if (passwordEncoder().matches(loginDto.getPassword(), hashedPassword)) {
-                    return true;
+                    User userWithRoles = userRepository.findByUsername(loginDto.getUsername());
+                    String auth = "Basic " + user.getUsername() + ":" + hashedPassword + ":" + userWithRoles.getRole();
+                    return auth;
                 }
-                return false; //"Niepoprawne hasło";
+                return null; //"Niepoprawne hasło";
             }
         }
-        return false;
+        return null;
     }
 
     public Boolean register(RegisterDto registerDto) {

@@ -6,14 +6,9 @@ import jakarta.persistence.*;
 
 @Entity
 public class Attachment implements IModel {
-    @TableGenerator(
-            name = "attachmentGenerator",
-            allocationSize = 1,
-            initialValue = 1)
+
     @Id
-    @GeneratedValue(
-            strategy=GenerationType.TABLE,
-            generator="attachmentGenerator")
+    @GeneratedValue
     private Integer id;
     private String fileName;
     @Lob

@@ -26,13 +26,13 @@ export class RegisterPageComponent {
     });
   }
 
-  register(form: FormGroup) {
+  /*register(form: FormGroup) {
     this.registerDto = form.value;
     if (!this.form.invalid) {
       this.registerDto = this.form.value;
       this._service.register(this.registerDto);
     }
-  }
+  }*/
 
   check() {
     

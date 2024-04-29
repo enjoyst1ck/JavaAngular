@@ -19,7 +19,7 @@ public class UserController {
     }*/
 
     @PutMapping("/account/login")
-    public Boolean login(@RequestBody LoginDto loginDto) {
+    public String login(@RequestBody LoginDto loginDto) {
         return service.login(loginDto);
     }
 

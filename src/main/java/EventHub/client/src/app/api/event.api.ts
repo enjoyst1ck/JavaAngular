@@ -52,9 +52,9 @@ export class EventApi extends GenericApi<EventDto> {
   }
 
   override insert(controllerName: string = this.controllerName, event: EventDto, headers?: HttpHeaders): Observable<EventDto[]> {
-    return this.http.post<EventDto[]>("http://localhost:8080/events/addEvent", { body: event, headers: headers });
+    return this.http.post<EventDto[]>("http://localhost:8080/events/addEvent", event, { headers: headers });
   }
-
+  
   updateEvent(controllerName: string = this.controllerName, event: EventDto, headers?: HttpHeaders): Observable<boolean> {
     return this.http.put<boolean>("http://localhost:8080/events/editEvent", event, { headers: headers });
   }

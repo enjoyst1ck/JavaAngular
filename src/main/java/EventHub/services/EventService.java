@@ -1,8 +1,10 @@
 package EventHub.services;
 
+import EventHub.models.Attachment;
 import EventHub.models.Event;
 import EventHub.models.Venue;
 import EventHub.repositories.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +18,12 @@ public class EventService extends GenericService<Event, EventRepository> {
     @Autowired
     private AttachmentRepository attachmentRepository;
     @Autowired
-    private ArtistRepository artistRepository;
-    @Autowired
-    private StuffRepository stuffRepository;
-    @Autowired
-    private VenueRepository venueRepository;
+    private AttachmentService attachmentService;
     public List<Event> getFiveLast() {
         return repo.getFiveLast();
     }
 
+    @Transactional
     public List<Event> insertEvent(Event event) {
         var attachments = event.getAttachments();
 
@@ -42,38 +41,36 @@ public class EventService extends GenericService<Event, EventRepository> {
         return getAll();
     }
 
-    public boolean editEvent(Event event) {
+    @Transactional
+    public List<Event> editEvent(Event event) {
         var attachments = event.getAttachments();
 
         var eventFromDatabase = repo.findById(event.getId());
         var attachmentsFromDatabase = eventFromDatabase.get().getAttachments();
 
-        var newAttachments = event.getAttachments();
-
-        attachmentsFromDatabase.removeAll(newAttachments);
-
-        if (attachmentsFromDatabase != null) {
-            attachmentsFromDatabase.forEach(a -> {
+        attachmentsFromDatabase.forEach(a -> {
+            if (!attachments.contains(a)) {
                 a.setEvent(null);
                 attachmentRepository.delete(a);
-            });
-        }
+            }
+        });
 
-        //event.setAttachments(null);
-        var newEvent = repo.save(event);
 
         if(attachments != null) {
             attachments.forEach(f -> {
-                f.setEvent(newEvent);
+                if(!attachmentsFromDatabase.contains(f)) {
+                    f.setEvent(event);
+                }
             });
         }
+//        if(attachments != null) attachmentRepository.saveAll(attachments);
 
-        if(attachments != null) attachmentRepository.saveAll(attachments);
+        repo.save(event);
 
         if (true) {
 
         }
 
-        return true;
+        return getAll();
     }
 }
