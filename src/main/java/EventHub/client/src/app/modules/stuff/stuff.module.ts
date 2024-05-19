@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { StuffRoutingModule } from './stuff-routing.module';
-import { StuffComponent } from './stuff/stuff.component';
+import { StuffRoutingModule } from './staff-routing.module';
+import { StuffComponent } from './staff/staff.component';
 
 
 @NgModule({

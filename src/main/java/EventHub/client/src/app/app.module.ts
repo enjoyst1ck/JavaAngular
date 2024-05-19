@@ -9,7 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from './modules/auth/auth.module';
-import { StuffModule } from './modules/stuff/stuff.module';
+import { StuffModule } from './modules/staff/staff.module';
 
 @NgModule({
   declarations: [

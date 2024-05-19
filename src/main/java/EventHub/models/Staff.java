@@ -7,24 +7,24 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Stuff implements IModel {
+public class Staff implements IModel {
     @TableGenerator(
-            name = "stuffGenerator",
+            name = "staffGenerator",
             allocationSize = 1,
             initialValue = 1)
     @Id
     @GeneratedValue(
             strategy=GenerationType.TABLE,
-            generator="stuffGenerator")
+            generator="staffGenerator")
     private Integer id;
     private String name;
-    @JsonIgnoreProperties(value = {"stuff"})
-    @OneToMany(mappedBy = "stuff", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = {"staff"})
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
     private List<Attachment> attachments;
     //lista organizowanych eventow
     @JsonIgnore
-    @JsonIgnoreProperties(value = {"stuff"})
-    @ManyToMany(mappedBy = "stuff")
+    @JsonIgnoreProperties(value = {"staff"})
+    @ManyToMany(mappedBy = "staff")
     private List<Event> events;
 
     @Override

@@ -13,6 +13,6 @@ export class EventDto {
   venue?: VenueDto;
   artists: ArtistDto[] = [];
   attachments: AttachmentDto[] = [];
-  stuff: StuffDto[] = [];
+  staff: StuffDto[] = [];
   static CLASS_NAME: string = 'EventDto';
 }

@@ -9,7 +9,7 @@
         <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
         <mat-datepicker #startPicker></mat-datepicker>
       </mat-form-field>
-      
+
       <mat-form-field class="col my-2">
         <mat-label>Choose a end date</mat-label>
         <input matInput formControlName="endDate" [matDatepicker]="endPicker" required>
@@ -18,17 +18,17 @@
         <mat-datepicker #endPicker></mat-datepicker>
       </mat-form-field>
     </div>
-    
+
     <mat-form-field class="col-12 mt-2">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" required/>
     </mat-form-field>
-    
+
     <mat-form-field class="col-12 mt-2">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description" rows="4" required></textarea>
     </mat-form-field>
-    
+
     <mat-form-field class="col-12 mt-2" *ngIf="allArtists">
       <p class="h5 mb-2">Artists</p>
       <mat-select [(value)]="selectedArtists" multiple="true">
@@ -39,7 +39,7 @@
     <mat-form-field class="col-12 mt-2" *ngIf="allStuff">
       <p class="h5 mb-2">Stuff</p>
       <mat-select [(value)]="selectedStuff" multiple="true">
-        <mat-option *ngFor="let stuff of allStuff" [value]="stuff">{{stuff.id}}. {{stuff.name}}</mat-option>
+        <mat-option *ngFor="let staff of allStuff" [value]="staff">{{staff.id}}. {{staff.name}}</mat-option>
       </mat-select>
     </mat-form-field>
 

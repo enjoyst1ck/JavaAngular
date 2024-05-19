@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-stuff',
-  templateUrl: './stuff.component.html',
+  selector: 'app-staff',
+  templateUrl: './staff.component.html',
   styles: [
   ]
 })

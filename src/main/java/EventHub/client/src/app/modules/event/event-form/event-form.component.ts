@@ -17,8 +17,8 @@ export class EventFormComponent implements OnInit {
   @ViewChild('picker') picker: any;
 
   attachments: AttachmentDto[] = [];
-  stuff: StuffDto[] = []
-  
+  staff: StuffDto[] = []
+
   allVenues: VenueDto[] = [];
   selectedVenue?: VenueDto;
   allArtists: ArtistDto[] = [];
@@ -34,15 +34,15 @@ export class EventFormComponent implements OnInit {
   isNew: boolean;
 
 
-  constructor(public dialogRef: MatDialogRef<EventFormComponent>, 
+  constructor(public dialogRef: MatDialogRef<EventFormComponent>,
               private service: EventService,
-              @Inject(MAT_DIALOG_DATA) public data: any, 
-              private dialog: MatDialog) {    
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private dialog: MatDialog) {
 
     this.form = data.form;
     this.isNew = data.isNew;
     this.selectedArtists = data.form.value.artists;
-    this.selectedStuff = data.form.value.stuff;
+    this.selectedStuff = data.form.value.staff;
     this.selectedVenue = data.form.value.venue;
   }
 
@@ -55,12 +55,12 @@ export class EventFormComponent implements OnInit {
         });
       }
     });
-    
-    this.service.getAllStuff().subscribe(stuff => {
-      if (stuff) {
-        this.allStuff = stuff;
-        this.selectedStuff = this.allStuff.filter(stuff => {
-          return this.selectedStuff.map(selectedStuff => selectedStuff.id).includes(stuff.id);
+
+    this.service.getAllStuff().subscribe(staff => {
+      if (staff) {
+        this.allStuff = staff;
+        this.selectedStuff = this.allStuff.filter(staff => {
+          return this.selectedStuff.map(selectedStuff => selectedStuff.id).includes(staff.id);
         })
       }
     });
@@ -77,7 +77,7 @@ export class EventFormComponent implements OnInit {
     if (this.form.valid) {
       const formData = this.form.value;
       formData.artists = this.selectedArtists;
-      formData.stuff = this.selectedStuff;
+      formData.staff = this.selectedStuff;
       formData.venue = this.selectedVenue;
       this.dialogRef.close(formData);
     }
@@ -90,33 +90,33 @@ export class EventFormComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const reader = new FileReader();
-  
+
       reader.onloadend = () => {
         const base64DataUrl = reader.result as string;
         let base64: string;
-  
+
         if (base64DataUrl.startsWith('data:image/')) {
           base64 = base64DataUrl.split(',')[1];
         } else {
           console.error(`It's not base64 format`);
           return;
         }
-  
+
         const photo: AttachmentDto = new AttachmentDto();
         photo.fileName = file.name;
         photo.image = base64;
-  
+
         this.form.value.attachments.push(photo);
         //WARNING
         //tutaj obsluzyc zeby mozna usuwac zdjecia z tej tablicy!!!
-        
+
         //this.attachments.push(photo);
       };
-  
+
       reader.readAsDataURL(file);
     }
   }
-  
+
   showPhoto(attachment: AttachmentDto) {
     this.selectedAttachmentToShow = attachment;
   }

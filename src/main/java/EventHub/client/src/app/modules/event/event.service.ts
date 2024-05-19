@@ -7,7 +7,7 @@ import { EventFormComponent } from './event-form/event-form.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ArtistApi } from 'src/app/api/artist.api';
-import { StuffApi } from 'src/app/api/stuff.api';
+import { StuffApi } from 'src/app/api/staff.api';
 import { venueApi } from 'src/app/api/venue.api';
 
 @Injectable({
@@ -17,15 +17,15 @@ export class EventService implements OnInit, OnDestroy {
   form?: FormGroup;
   private dataUpdated: BehaviorSubject<void> = new BehaviorSubject<void>(undefined);
   dataUpdated$ = this.dataUpdated.asObservable();
-  
+
   get dataUpdate() {
     return this.dataUpdated.asObservable();
   }
-  
-  constructor(private _api: EventApi, 
+
+  constructor(private _api: EventApi,
               private _artistApi: ArtistApi,
               private _stuffApi: StuffApi,
-              private _venueApi: venueApi, 
+              private _venueApi: venueApi,
               public fb: FormBuilder, public dialog: MatDialog, public http: HttpClient) { }
 
   ngOnInit(): void {
@@ -69,7 +69,7 @@ export class EventService implements OnInit, OnDestroy {
       endDate: new FormControl(dto?.endDate, Validators.required),
       venue: new FormControl(dto?.venue),
       artists: new FormControl(dto?.artists ? dto.artists : []),
-      stuff: new FormControl(dto?.stuff ? dto?.stuff : []),
+      staff: new FormControl(dto?.staff ? dto?.staff : []),
       attachments: new FormControl(dto?.attachments ? dto?.attachments : []),
     });
   }
@@ -83,9 +83,9 @@ export class EventService implements OnInit, OnDestroy {
       height: '560px',
 
       disableClose: true,
-      data: { 
+      data: {
         form: this.form,
-        isNew: isNew 
+        isNew: isNew
     }
     }).afterClosed().subscribe(result => {
       if (result && isNew) {

@@ -8,8 +8,8 @@ import { StuffDto } from "../dtos/stuffDto";
   providedIn: 'root'
 })
 export class StuffApi extends GenericApi<StuffDto> {
-  
-  controllerName: string = "stuff";
+
+  controllerName: string = "staff";
 
   constructor(public http: HttpClient) {
       super(http);
@@ -17,20 +17,20 @@ export class StuffApi extends GenericApi<StuffDto> {
 
   override getAll(methodName: string = "getall"): Observable<StuffDto[]> {
 
-    let stuff = super.getAll(this.controllerName, methodName);
-    return stuff;
+    let staff = super.getAll(this.controllerName, methodName);
+    return staff;
   }
 
   override getById(controllerName: string = this.controllerName, id: number): Observable<StuffDto> {
     return super.getById(this.controllerName, id);
   }
 
-  override insert(controllerName: string = this.controllerName, stuff: StuffDto): Observable<StuffDto[]> {
-    return super.insert(this.controllerName, stuff);
+  override insert(controllerName: string = this.controllerName, staff: StuffDto): Observable<StuffDto[]> {
+    return super.insert(this.controllerName, staff);
   }
 
-  override update(controllerName: string = this.controllerName, stuff: StuffDto): Observable<StuffDto[]> {
-    return super.update(this.controllerName, stuff);
+  override update(controllerName: string = this.controllerName, staff: StuffDto): Observable<StuffDto[]> {
+    return super.update(this.controllerName, staff);
   }
 
   override delete(controllerName: string = this.controllerName, id: number): Observable<void> {

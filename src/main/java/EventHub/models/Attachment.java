@@ -28,8 +28,8 @@ public class Attachment implements IModel {
     @JsonIgnore
     @JsonIgnoreProperties(value = {"attachments"})
     @ManyToOne(optional = true)
-    @JoinColumn(name = "stuff_id")
-    private Stuff stuff;
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
 
     @Override
     public Integer getId() {
@@ -73,11 +73,11 @@ public class Attachment implements IModel {
         this.event = event;
     }
 
-    public Stuff getStuff() {
-        return stuff;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setStuff(Stuff stuff) {
-        this.stuff = stuff;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }

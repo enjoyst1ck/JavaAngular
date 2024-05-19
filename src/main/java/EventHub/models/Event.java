@@ -3,7 +3,6 @@ package EventHub.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.aspectj.weaver.ast.Or;
 
 import java.util.Date;
 import java.util.List;
@@ -45,8 +44,8 @@ public class Event implements IModel {
     @ManyToMany
     @JoinTable(name = "eventOrganizer",
                joinColumns = {@JoinColumn(name = "id_event")},
-               inverseJoinColumns = {@JoinColumn(name = "id_stuff")})
-    private List<Stuff> stuff;
+               inverseJoinColumns = {@JoinColumn(name = "id_staff")})
+    private List<Staff> staff;
 
     @Override
     public Integer getId() {
@@ -122,11 +121,11 @@ public class Event implements IModel {
         this.artists = artists;
     }
 
-    public List<Stuff> getStuff() {
-        return stuff;
+    public List<Staff> getStaff() {
+        return staff;
     }
 
-    public void setStuff(List<Stuff> stuff) {
-        this.stuff = stuff;
+    public void setStaff(List<Staff> staff) {
+        this.staff = staff;
     }
 }
