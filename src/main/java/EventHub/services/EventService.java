@@ -1,30 +1,33 @@
 package EventHub.services;
 
-import EventHub.models.Attachment;
+import EventHub.dtos.EventDto;
+import EventHub.mappers.EventMapper;
 import EventHub.models.Event;
-import EventHub.models.Venue;
 import EventHub.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class EventService extends GenericService<Event, EventRepository> {
+public class EventService extends GenericService<Event, EventDto, EventRepository, EventMapper> {
     @Autowired
     private EventRepository repo;
     @Autowired
     private AttachmentRepository attachmentRepository;
     @Autowired
     private AttachmentService attachmentService;
-    public List<Event> getFiveLast() {
-        return repo.getFiveLast();
+    @Autowired
+    private EventMapper mapper;
+
+    public List<EventDto> getFiveLast() {
+        var entity = repo.getFiveLast();
+        return entity.stream().map(mapper::toDto).toList();
     }
 
     @Transactional
-    public List<Event> insertEvent(Event event) {
+    public List<EventDto> insertEvent(Event event) {
         var attachments = event.getAttachments();
 
         //event.setAttachments(null);
@@ -42,7 +45,7 @@ public class EventService extends GenericService<Event, EventRepository> {
     }
 
     @Transactional
-    public List<Event> editEvent(Event event) {
+    public List<EventDto> editEvent(Event event) {
         var attachments = event.getAttachments();
 
         var eventFromDatabase = repo.findById(event.getId());

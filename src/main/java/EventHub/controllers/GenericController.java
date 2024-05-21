@@ -1,5 +1,7 @@
 package EventHub.controllers;
 
+import EventHub.dtos.IDto;
+import EventHub.mappers.IMapper;
 import EventHub.models.IModel;
 import EventHub.services.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,29 +10,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public abstract class GenericController<M extends IModel, S extends GenericService> {
+public abstract class GenericController<M extends IModel, D extends IDto, S extends GenericService> {
     @Autowired
     private S service;
 
     @GetMapping("/getall")
-    public List<M> getAll() {
+    public List<D> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public M getById(@PathVariable("id") Integer id) throws Exception {
-        return (M) service.getById(id);
+    public D getById(@PathVariable("id") Integer id) throws Exception {
+        return (D) service.getById(id);
     }
 
     @PostMapping("/add")
-    public M add(@RequestBody M object) {
-        return (M) service.insert(object);
+    public D add(@RequestBody D objectDto) {
+        return (D) service.insert(objectDto);
     }
 
     @PutMapping("/edit")
-    public List<M>edit(@RequestBody M object) {
-        service.update(object);
-        return service.getAll();
+    public D edit(@RequestBody D objectDto) {
+        return (D) service.update(objectDto);
     }
 
     @DeleteMapping("delete/{id}")

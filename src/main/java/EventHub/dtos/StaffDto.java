@@ -1,38 +1,20 @@
-package EventHub.models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+package EventHub.dtos;
+
+import EventHub.models.Attachment;
+import EventHub.models.Event;
 
 import java.util.List;
 
-@Entity
-public class Artist implements IModel {
-    @TableGenerator(
-            name = "artistGenerator",
-            allocationSize = 1,
-            initialValue = 1)
-    @Id
-    @GeneratedValue(
-            strategy=GenerationType.TABLE,
-            generator="artistGenerator")
+public class StaffDto implements IDto {
     private Integer id;
     private String name;
-
-    @JsonIgnoreProperties(value = {"artist"})
-    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private List<Attachment> attachments;
-
-    //mozna wyswietlic strone artysty i zobaczyc w jakich wydarzeniach bral udział
-    @JsonIgnore
-    @ManyToMany(mappedBy = "artists")
     private List<Event> events;
 
-    @Override
     public Integer getId() {
         return id;
     }
 
-    @Override
     public void setId(Integer id) {
         this.id = id;
     }

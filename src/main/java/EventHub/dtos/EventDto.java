@@ -1,58 +1,25 @@
-package EventHub.models;
+package EventHub.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-
+import EventHub.models.*;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-public class Event implements IModel {
-    @TableGenerator(
-            name = "eventGenerator",
-            allocationSize = 1,
-            initialValue = 1)
-    @Id
-    @GeneratedValue(
-            strategy=GenerationType.TABLE,
-            generator="eventGenerator")
+public class EventDto implements IDto {
     private Integer id;
     private String name;
     private String description;
     private Date startDate;
     private Date endDate;
-    @JsonIgnoreProperties(value = {"event"})
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Attachment> attachments;
-    @JsonIgnore
-    @JsonIgnoreProperties(value = {"event"})
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Review> reviews;
-    @JsonIgnoreProperties(value = {"events"})
-    @ManyToOne
-    @JoinColumn(name = "venue_id")
     private Venue venue;
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "eventArtist",
-               joinColumns = {@JoinColumn(name = "id_event")},
-               inverseJoinColumns = {@JoinColumn(name = "id_artist")})
     private List<Artist> artists;
-
-    @JsonIgnoreProperties(value = {"events"})
-    @ManyToMany
-    @JoinTable(name = "eventStaff",
-               joinColumns = {@JoinColumn(name = "id_event")},
-               inverseJoinColumns = {@JoinColumn(name = "id_staff")})
     private List<Staff> staff;
 
-    @Override
     public Integer getId() {
         return id;
     }
 
-    @Override
     public void setId(Integer id) {
         this.id = id;
     }

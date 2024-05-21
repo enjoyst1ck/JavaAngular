@@ -1,5 +1,6 @@
 package EventHub.controllers;
 
+import EventHub.dtos.ReviewDto;
 import EventHub.models.Review;
 import EventHub.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,5 +13,5 @@ import java.util.List;
 @RestController
 @RequestMapping("reviews")
 @CrossOrigin(origins = "http://localhost:4200")
-public class ReviewController extends GenericController<Review, ReviewService> {
+public class ReviewController extends GenericController<Review, ReviewDto, ReviewService> {
 }
