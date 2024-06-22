@@ -9,7 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from './modules/auth/auth.module';
-import { StuffModule } from './modules/staff/staff.module';
+import { StaffModule } from './modules/staff/staff.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { StuffModule } from './modules/staff/staff.module';
     HttpClientModule,
     BrowserAnimationsModule,
     AuthModule,
-    StuffModule
+    StaffModule
   ],
   providers: [
     EventApi

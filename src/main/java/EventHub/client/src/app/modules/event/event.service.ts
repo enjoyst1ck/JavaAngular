@@ -7,8 +7,8 @@ import { EventFormComponent } from './event-form/event-form.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ArtistApi } from 'src/app/api/artist.api';
-import { StuffApi } from 'src/app/api/staff.api';
-import { venueApi } from 'src/app/api/venue.api';
+import { StaffApi } from 'src/app/api/staff.api';
+import { VenueApi } from 'src/app/api/venue.api';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,8 @@ export class EventService implements OnInit, OnDestroy {
 
   constructor(private _api: EventApi,
               private _artistApi: ArtistApi,
-              private _stuffApi: StuffApi,
-              private _venueApi: venueApi,
+              private _staffApi: StaffApi,
+              private _venueApi: VenueApi,
               public fb: FormBuilder, public dialog: MatDialog, public http: HttpClient) { }
 
   ngOnInit(): void {
@@ -39,8 +39,8 @@ export class EventService implements OnInit, OnDestroy {
     return this._artistApi.getAll();
   }
 
-  getAllStuff() {
-    return this._stuffApi.getAll();
+  getAllStaff() {
+    return this._staffApi.getAll();
   }
 
   getAllVenues() {

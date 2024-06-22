@@ -2,12 +2,12 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { GenericApi } from "./generic.api";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
-import { StuffDto } from "../dtos/stuffDto";
+import { StaffDto } from "../dtos/staffDto";
 
 @Injectable({
   providedIn: 'root'
 })
-export class StuffApi extends GenericApi<StuffDto> {
+export class StaffApi extends GenericApi<StaffDto> {
 
   controllerName: string = "staff";
 
@@ -15,21 +15,21 @@ export class StuffApi extends GenericApi<StuffDto> {
       super(http);
   }
 
-  override getAll(methodName: string = "getall"): Observable<StuffDto[]> {
+  override getAll(methodName: string = "getall"): Observable<StaffDto[]> {
 
     let staff = super.getAll(this.controllerName, methodName);
     return staff;
   }
 
-  override getById(controllerName: string = this.controllerName, id: number): Observable<StuffDto> {
+  override getById(controllerName: string = this.controllerName, id: number): Observable<StaffDto> {
     return super.getById(this.controllerName, id);
   }
 
-  override insert(controllerName: string = this.controllerName, staff: StuffDto): Observable<StuffDto[]> {
+  override insert(controllerName: string = this.controllerName, staff: StaffDto): Observable<StaffDto[]> {
     return super.insert(this.controllerName, staff);
   }
 
-  override update(controllerName: string = this.controllerName, staff: StuffDto): Observable<StuffDto[]> {
+  override update(controllerName: string = this.controllerName, staff: StaffDto): Observable<StaffDto[]> {
     return super.update(this.controllerName, staff);
   }
 

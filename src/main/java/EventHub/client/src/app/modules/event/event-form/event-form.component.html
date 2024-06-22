@@ -36,10 +36,10 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="col-12 mt-2" *ngIf="allStuff">
-      <p class="h5 mb-2">Stuff</p>
-      <mat-select [(value)]="selectedStuff" multiple="true">
-        <mat-option *ngFor="let staff of allStuff" [value]="staff">{{staff.id}}. {{staff.name}}</mat-option>
+    <mat-form-field class="col-12 mt-2" *ngIf="allStaff">
+      <p class="h5 mb-2">Staff</p>
+      <mat-select [(value)]="selectedStaff" multiple="true">
+        <mat-option *ngFor="let staff of allStaff" [value]="staff">{{staff.id}}. {{staff.name}}</mat-option>
       </mat-select>
     </mat-form-field>
 

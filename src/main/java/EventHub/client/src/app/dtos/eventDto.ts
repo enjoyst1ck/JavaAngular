@@ -1,7 +1,7 @@
 
 import { ArtistDto } from "./artistDto";
 import { AttachmentDto } from "./attachmentDto";
-import { StuffDto } from "./stuffDto";
+import { StaffDto } from "./staffDto";
 import { VenueDto } from "./venueDto";
 
 export class EventDto {
@@ -13,6 +13,6 @@ export class EventDto {
   venue?: VenueDto;
   artists: ArtistDto[] = [];
   attachments: AttachmentDto[] = [];
-  staff: StuffDto[] = [];
+  staff: StaffDto[] = [];
   static CLASS_NAME: string = 'EventDto';
 }

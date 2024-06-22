@@ -1,6 +1,6 @@
 import { AttachmentDto } from "./attachmentDto";
 
-export class StuffDto {
+export class StaffDto {
   id!: number;
   name!: string;
   attachments: AttachmentDto[] = [];

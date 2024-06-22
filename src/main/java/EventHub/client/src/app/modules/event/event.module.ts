@@ -17,7 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
-import { StuffModule } from '../staff/staff.module';
+import { StaffModule } from '../staff/staff.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 
@@ -43,7 +43,7 @@ import { MatListModule } from '@angular/material/list';
     MatFormFieldModule,
     MatDatepickerModule,
     MatButtonModule,
-    StuffModule,
+    StaffModule,
     MatSelectModule,
     MatListModule
   ]

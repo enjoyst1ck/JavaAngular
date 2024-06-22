@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { AttachmentDto } from 'src/app/dtos/attachmentDto';
 import { PhotoDialogComponent } from '../../shared/photo-dialog/photo-dialog.component';
 import { VenueDto } from 'src/app/dtos/venueDto';
-import { StuffDto } from 'src/app/dtos/stuffDto';
+import { StaffDto } from 'src/app/dtos/staffDto';
 import { EventService } from '../event.service';
 import { ArtistDto } from 'src/app/dtos/artistDto';
 
@@ -17,18 +17,18 @@ export class EventFormComponent implements OnInit {
   @ViewChild('picker') picker: any;
 
   attachments: AttachmentDto[] = [];
-  staff: StuffDto[] = []
+  staff: StaffDto[] = []
 
   allVenues: VenueDto[] = [];
   selectedVenue?: VenueDto;
   allArtists: ArtistDto[] = [];
   selectedArtists: ArtistDto[] = [];
-  allStuff: StuffDto[] = [];
-  selectedStuff: StuffDto[] = [];
+  allStaff: StaffDto[] = [];
+  selectedStaff: StaffDto[] = [];
 
   selectedAttachmentToShow: AttachmentDto | null = null;
 
-  organizers: StuffDto[] = [{id:1, name:"Bogumił", attachments: [], events: []}, {id:2, name:"Julcia", attachments: [], events: []}, {id:3, name:"Dawid", attachments: [], events: []}, {id:4, name:"Bartek", attachments: [], events: []}, {id:5, name:"Małgorzata", attachments: [], events: []}, {id:6, name:"Anna", attachments: [], events: []}];
+  organizers: StaffDto[] = [{id:1, name:"Bogumił", attachments: [], events: []}, {id:2, name:"Julcia", attachments: [], events: []}, {id:3, name:"Dawid", attachments: [], events: []}, {id:4, name:"Bartek", attachments: [], events: []}, {id:5, name:"Małgorzata", attachments: [], events: []}, {id:6, name:"Anna", attachments: [], events: []}];
 
   form: FormGroup;
   isNew: boolean;
@@ -42,7 +42,7 @@ export class EventFormComponent implements OnInit {
     this.form = data.form;
     this.isNew = data.isNew;
     this.selectedArtists = data.form.value.artists;
-    this.selectedStuff = data.form.value.staff;
+    this.selectedStaff = data.form.value.staff;
     this.selectedVenue = data.form.value.venue;
   }
 
@@ -56,11 +56,11 @@ export class EventFormComponent implements OnInit {
       }
     });
 
-    this.service.getAllStuff().subscribe(staff => {
+    this.service.getAllStaff().subscribe((staff : any) => {
       if (staff) {
-        this.allStuff = staff;
-        this.selectedStuff = this.allStuff.filter(staff => {
-          return this.selectedStuff.map(selectedStuff => selectedStuff.id).includes(staff.id);
+        this.allStaff = staff;
+        this.selectedStaff = this.allStaff.filter(staff => {
+          return this.selectedStaff.map(selectedStaff => selectedStaff.id).includes(staff.id);
         })
       }
     });
@@ -77,7 +77,7 @@ export class EventFormComponent implements OnInit {
     if (this.form.valid) {
       const formData = this.form.value;
       formData.artists = this.selectedArtists;
-      formData.staff = this.selectedStuff;
+      formData.staff = this.selectedStaff;
       formData.venue = this.selectedVenue;
       this.dialogRef.close(formData);
     }

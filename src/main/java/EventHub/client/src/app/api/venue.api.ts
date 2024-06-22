@@ -7,7 +7,7 @@ import { VenueDto } from "../dtos/venueDto";
 @Injectable({
   providedIn: 'root'
 })
-export class venueApi extends GenericApi<VenueDto> {
+export class VenueApi extends GenericApi<VenueDto> {
   
   controllerName: string = "venues";
 
