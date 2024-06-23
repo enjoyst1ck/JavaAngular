@@ -16,13 +16,7 @@ export class ArtistApi extends GenericApi<ArtistDto> {
   }
 
   override getAll(methodName: string = "getall"): Observable<ArtistDto[]> {
-    //this.authService.setCredentials('admin', 'admin');
-    
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic admin:admin'//this.authService.getAuthorizationHeader()
-    });
-
-    let artists = super.getAll(this.controllerName, methodName, headers);
+    let artists = super.getAll(this.controllerName, methodName);
     return artists;
   }
 

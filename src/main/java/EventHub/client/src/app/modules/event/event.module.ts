@@ -8,7 +8,7 @@ import { EventListComponent } from './event-list/event-list.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SharedModule } from '../shared/shared.module';
 import { MatSortModule } from '@angular/material/sort';
-import { MatNativeDateModule } from '@angular/material/core';
+import { ErrorStateMatcher, MAT_DATE_LOCALE, MatNativeDateModule, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +22,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 
 @NgModule({
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-AU' }
+  ],
   declarations: [
     EventListComponent,
     EventDetailsComponent,
@@ -45,7 +48,7 @@ import { MatListModule } from '@angular/material/list';
     MatButtonModule,
     StaffModule,
     MatSelectModule,
-    MatListModule
+    MatListModule,
   ]
 })
 export class EventModule { }

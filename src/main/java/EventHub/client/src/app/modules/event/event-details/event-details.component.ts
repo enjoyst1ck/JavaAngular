@@ -12,6 +12,7 @@ export class EventDetailsComponent implements OnInit {
 
   eventId?: number;
   eventDto?: EventDto;
+  currentIndex = 0;
 
   constructor(private _service: EventService,
               private _route: ActivatedRoute) { }
@@ -27,5 +28,4 @@ export class EventDetailsComponent implements OnInit {
       );
     }
   }
-
 }

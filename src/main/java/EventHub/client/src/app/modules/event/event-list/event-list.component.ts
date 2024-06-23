@@ -73,6 +73,4 @@ export class EventListComponent implements OnInit, AfterViewInit, OnDestroy {
     
     this.ngAfterViewInit();
   }
-
-
 }

@@ -13,7 +13,7 @@ form {
   justify-content: flex-end;
 }
 
-.artists, .organizers {
+.artists, .staff {
   padding: 20px;
   margin-bottom: 25px;
   border-radius: 16px;
@@ -24,7 +24,7 @@ form {
   box-shadow: 8px 8px 27px -4px rgba(66, 68, 90, 1);
 }
 
-.artists-content, .organizers-content {
+.artists-content, .staff-content {
   height: 200px;
   overflow-y: scroll;
   scrollbar-width: none;

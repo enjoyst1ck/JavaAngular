@@ -1,139 +1,210 @@
 package EventHub.services;
 
-import EventHub.dtos.LoginDto;
-import EventHub.dtos.RegisterDto;
+import EventHub.dtos.UserDto;
 import EventHub.models.User;
 import EventHub.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
-    private JdbcTemplate jdbcTemplate;
-    public PasswordEncoder passwordEncoder()
-    {
-        return new BCryptPasswordEncoder();
-    }
-    public String login(LoginDto loginDto) {
-        UserDetails user = loadUserByUsername(loginDto.getUsername());
-        if (user != null) {
-            String hashedPassword = user.getPassword();
-            if (hashedPassword != null) {
-                if (passwordEncoder().matches(loginDto.getPassword(), hashedPassword)) {
-                    User userWithRoles = userRepository.findByUsername(loginDto.getUsername());
-                    String auth = "Basic " + user.getUsername() + ":" + hashedPassword + ":" + userWithRoles.getRole();
-                    return auth;
-                }
-                return null; //"Niepoprawne hasło";
+    private UserRepository userRepo;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    public UserDto register(UserDto registrationRequest){
+        UserDto resp = new UserDto();
+
+        try {
+            User ourUser = new User();
+            ourUser.setRole(registrationRequest.getRole());
+            ourUser.setUsername(registrationRequest.getUsername());
+            ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+
+            User ourUsersResult = userRepo.save(ourUser);
+
+            if(ourUsersResult.getId() > 0){
+                resp.setOurUsers(ourUsersResult);
+                resp.setMessage("User Saved Successfully");
+                resp.setStatusCode(200);
             }
+
+        }catch (Exception e){
+            resp.setStatusCode(500);
+            resp.setError(e.getMessage());
         }
-        return null;
+
+        return resp;
     }
 
-    public Boolean register(RegisterDto registerDto) {
-        UserDetails user = loadUserByUsername(registerDto.getUsername());
-        if (user != null) {
-            String hashedPassword = user.getPassword();
-            if (hashedPassword != null) {
-                if (passwordEncoder().matches(registerDto.getPassword(), hashedPassword)) {
-                    return true;
-                }
-                return false; //"Niepoprawne hasło";
+    public UserDto login(UserDto loginRequest){
+        UserDto response = new UserDto();
+
+        try {
+            authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+            var user = userRepo.findByUsername(loginRequest.getUsername());
+            var jwt = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
+            response.setStatusCode(200);
+            response.setToken(jwt);
+            response.setRole(user.getRole());
+            response.setRefreshToken(refreshToken);
+            response.setExpirationTime("48Hrs");
+            response.setMessage("Successfully Logged In");
+
+        }catch (Exception e){
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+        }
+
+        return response;
+    }
+
+    public UserDto refreshToken(UserDto refreshTokenReqiest){
+        UserDto response = new UserDto();
+        try{
+            String username = jwtService.extractUsername(refreshTokenReqiest.getToken());
+            User users = userRepo.findByUsername(username);
+            if (jwtService.isTokenValid(refreshTokenReqiest.getToken(), users)) {
+                var jwt = jwtService.generateToken(users);
+                response.setStatusCode(200);
+                response.setToken(jwt);
+                response.setRefreshToken(refreshTokenReqiest.getToken());
+                response.setExpirationTime("24Hr");
+                response.setMessage("Successfully Refreshed Token");
             }
+            response.setStatusCode(200);
+            return response;
+
+        }catch (Exception e){
+            response.setStatusCode(500);
+            response.setMessage(e.getMessage());
+            return response;
         }
-        return false;
     }
 
-    public boolean authenticateFromHeader(String authHeader) {
-        if (StringUtils.isEmpty(authHeader) || !authHeader.startsWith("Basic ")) {
-            return false;
+
+    public UserDto getAllUsers() {
+        UserDto reqRes = new UserDto();
+
+        try {
+            List<User> result = userRepo.findAll();
+            if (!result.isEmpty()) {
+                reqRes.setOurUsersList(result);
+                reqRes.setStatusCode(200);
+                reqRes.setMessage("Successful");
+            } else {
+                reqRes.setStatusCode(404);
+                reqRes.setMessage("No users found");
+            }
+            return reqRes;
+        } catch (Exception e) {
+            reqRes.setStatusCode(500);
+            reqRes.setMessage("Error occurred: " + e.getMessage());
+            return reqRes;
         }
-
-        String base64Credentials = authHeader.substring("Basic ".length()).trim();
-        String credentials = new String(Base64.getDecoder().decode(base64Credentials));
-        String[] values = credentials.split(":", 2);
-
-        if (values.length != 2) {
-            return false;
-        }
-
-        String username = values[0];
-        String password = values[1];
-
-        String query = "SELECT password_hash FROM users WHERE username = ?";
-        String hashedPassword = jdbcTemplate.queryForObject(query, String.class, username);
-        if (hashedPassword != null) {
-            return passwordEncoder().matches(password, hashedPassword);
-        }
-        return false;
-    }
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
     }
 
-    public boolean checkUser(String authHeader) {
-        // Sprawdzenie, czy nagłówek autoryzacyjny został dostarczony
-        if (authHeader == null || !authHeader.startsWith("Basic ")) {
-            return false;
+
+    public UserDto getUsersById(Integer id) {
+        UserDto reqRes = new UserDto();
+        try {
+            User usersById = userRepo.findById(Long.valueOf(id)).orElseThrow(() -> new RuntimeException("User Not found"));
+            reqRes.setOurUsers(usersById);
+            reqRes.setStatusCode(200);
+            reqRes.setMessage("Users with id '" + id + "' found successfully");
+        } catch (Exception e) {
+            reqRes.setStatusCode(500);
+            reqRes.setMessage("Error occurred: " + e.getMessage());
         }
-
-        String base64Credentials = authHeader.substring("Basic ".length()).trim();
-        String credentials = new String(Base64.getDecoder().decode(base64Credentials));
-        String[] values = credentials.split(":", 2);
-
-        return true;//passwordEncoder.matches(password, hashedPassword);
+        return reqRes;
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return  userRepository.findByUsername(username)
-//                    .map(SecurityUser::new)
-//                    .orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
-//    }
 
-/*    public UserDetails currentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getPrincipal() instanceof UserDetails) {
-            return (UserDetails) auth.getPrincipal();
+    public UserDto deleteUser(Integer userId) {
+        UserDto reqRes = new UserDto();
+        try {
+            Optional<User> userOptional = userRepo.findById(Long.valueOf(userId));
+            if (userOptional.isPresent()) {
+                userRepo.deleteById(Long.valueOf(userId));
+                reqRes.setStatusCode(200);
+                reqRes.setMessage("User deleted successfully");
+            } else {
+                reqRes.setStatusCode(404);
+                reqRes.setMessage("User not found for deletion");
+            }
+        } catch (Exception e) {
+            reqRes.setStatusCode(500);
+            reqRes.setMessage("Error occurred while deleting user: " + e.getMessage());
         }
-        return null;
-    }
-*/
-    public void saveUser (EventHub.models.User user) {
-        userRepository.save(user);
+        return reqRes;
     }
 
-    /*public UserDto login(LoginDto loginDto) {
-        String username = loginDto.getUsername();
-        String password = loginDto.getPassword();
+    public UserDto updateUser(Integer userId, User updatedUser) {
+        UserDto reqRes = new UserDto();
+        try {
+            Optional<User> userOptional = userRepo.findById(Long.valueOf(userId));
+            if (userOptional.isPresent()) {
+                User existingUser = userOptional.get();
+                existingUser.setUsername(updatedUser.getUsername());
+                existingUser.setRole(updatedUser.getRole());
 
-        User user = (User) loadUserByUsername(username);
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new AuthenticationException("Invalid username or password") {
-                @Override
-                public String getMessage() {
-                    return super.getMessage();
+                // Check if password is present in the request
+                if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                    // Encode the password and update it
+                    existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
                 }
-            };
+
+                User savedUser = userRepo.save(existingUser);
+                reqRes.setOurUsers(savedUser);
+                reqRes.setStatusCode(200);
+                reqRes.setMessage("User updated successfully");
+            } else {
+                reqRes.setStatusCode(404);
+                reqRes.setMessage("User not found for update");
+            }
+        } catch (Exception e) {
+            reqRes.setStatusCode(500);
+            reqRes.setMessage("Error occurred while updating user: " + e.getMessage());
+        }
+        return reqRes;
+    }
+
+
+    public UserDto getMyInfo(String username){
+        UserDto reqRes = new UserDto();
+        try {
+            User userOptional = userRepo.findByUsername(username);
+            if (userOptional != null) {
+                reqRes.setOurUsers(userOptional);
+                reqRes.setStatusCode(200);
+                reqRes.setMessage("successful");
+            } else {
+                reqRes.setStatusCode(404);
+                reqRes.setMessage("User not found for update");
+            }
+
+        }catch (Exception e){
+            reqRes.setStatusCode(500);
+            reqRes.setMessage("Error occurred while getting user info: " + e.getMessage());
         }
 
-        UserDto userDto = new UserDto(user.getId(), user.getUsername(), user.getRole());
-
-        return userDto;
-    }*/
+        return reqRes;
+    }
 }

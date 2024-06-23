@@ -7,7 +7,8 @@
         <input matInput formControlName="startDate" [matDatepicker]="startPicker" required>
         <mat-hint>DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
+        <mat-datepicker #startPicker format="dd/MM/yyyy"></mat-datepicker>
+        <mat-error>Start date is <strong>required</strong></mat-error>
       </mat-form-field>
 
       <mat-form-field class="col my-2">
@@ -16,17 +17,20 @@
         <mat-hint>DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
+        <mat-error>End date is <strong>required</strong></mat-error>
       </mat-form-field>
     </div>
 
     <mat-form-field class="col-12 mt-2">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" required/>
+      <mat-error>Name is <strong>required</strong></mat-error>
     </mat-form-field>
 
     <mat-form-field class="col-12 mt-2">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description" rows="4" required></textarea>
+      <mat-error>Description is <strong>required</strong></mat-error>
     </mat-form-field>
 
     <mat-form-field class="col-12 mt-2" *ngIf="allArtists">

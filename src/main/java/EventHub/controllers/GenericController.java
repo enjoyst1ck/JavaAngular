@@ -15,7 +15,7 @@ public abstract class GenericController<M extends IModel, D extends IDto, S exte
     private S service;
 
     @GetMapping("/getall")
-    public List<D> getAll() {
+    public List<D> getAll() throws Exception {
         return service.getAll();
     }
 
@@ -25,17 +25,17 @@ public abstract class GenericController<M extends IModel, D extends IDto, S exte
     }
 
     @PostMapping("/add")
-    public D add(@RequestBody D objectDto) {
+    public D add(@RequestBody D objectDto) throws Exception {
         return (D) service.insert(objectDto);
     }
 
     @PutMapping("/edit")
-    public D edit(@RequestBody D objectDto) {
+    public D edit(@RequestBody D objectDto) throws Exception {
         return (D) service.update(objectDto);
     }
 
     @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Integer id) throws Exception {
         service.delete(id);
     }
 }

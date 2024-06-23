@@ -1,9 +1,6 @@
 package EventHub;
 
-import EventHub.helpers.RestAuthenticationEntryPoint;
-import EventHub.models.User;
-import EventHub.services.UserService;
-import jakarta.annotation.PostConstruct;
+import EventHub.Security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
@@ -11,40 +8,28 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.context.WebApplicationContext;
-
-import javax.sql.DataSource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
     @Autowired
-    private DataSource dataSource;
-
+    private UserDetailsService userDetailsService;
     @Autowired
-    private WebApplicationContext applicationContext;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Autowired
-    private RestAuthenticationEntryPoint authenticationEntryPoint;
 
-    @Autowired
-    private UserService userDetailsService;
-
-    @PostConstruct
-    public void completeSetup() {
-        userDetailsService = applicationContext.getBean(UserService.class);
-    }
 
 //    @Bean
 //    public SecurityFilterChain eventsfilterChain(HttpSecurity http) throws Exception {
@@ -62,52 +47,61 @@ public class SecurityConfig {
 //        return http.build();
 //    }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .anyRequest().permitAll() // Pozwól na dostęp do wszystkich żądań
-                .and()
-                .csrf(csrf -> csrf.disable()) // Wyłącz ochronę przed atakami CSRF
-                .formLogin(login -> login.disable()) // Wyłącz formularz logowania
-                .httpBasic(basic -> basic.disable());
 
-        return http.build();
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(request->request
+                        .requestMatchers("/auth/**", "/public/**").permitAll()
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/user/**").hasAnyAuthority("USER")
+                        .requestMatchers("/adminuser/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/artists/getall").permitAll()
+                        //.requestMatchers("/artists/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/staff/getall").permitAll()
+                        //.requestMatchers("/staff/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/venues/getall").permitAll()
+                        //.requestMatchers("/venues/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers("/events/**").permitAll()
+                        .requestMatchers("/artists/**").permitAll()
+                        .requestMatchers("/staff/**").permitAll()
+                        .requestMatchers("/venues/**").permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider()).addFilterBefore(
+                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+                );
+        return httpSecurity.build();
     }
 
     @Bean
-    public UserDetailsManager users(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        authenticationManagerBuilder.authenticationProvider(authenticationProvider());
-        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        jdbcUserDetailsManager.setAuthenticationManager(authenticationManager);
-        return jdbcUserDetailsManager;
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder()
-    {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void establishUsers()
-    {
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void establishUsers()
+//    {
 //        userDetailsService.saveUser(new User("michal", passwordEncoder().encode("michal"), "ROLE_USER"));
 //        userDetailsService.saveUser(new User("jan", passwordEncoder().encode("jan"), "ROLE_USER"));
 //        userDetailsService.saveUser(new User("admin", passwordEncoder().encode("admin"), "ROLE_ADMIN"));
-//        userDetailsService.saveUser(new User("kamil", passwordEncoder().encode("kamil"), "ROLE_ORGANIZER"));
+//        userDetailsService.saveUser(new User("kamil", passwordEncoder().encode("kamil"), "ROLE_USER"));
 //        userDetailsService.saveUser(new User("wacek", passwordEncoder().encode("wacek"), "ROLE_USER"));
-//        userDetailsService.saveUser(new User("kuba", passwordEncoder().encode("kuba"), "ROLE_ORGANIZER"));
-    }
+//        userDetailsService.saveUser(new User("kuba", passwordEncoder().encode("kuba"), "ROLE_ADMIN"));
+//    }
 }

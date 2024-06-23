@@ -6,44 +6,15 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Artist implements IModel {
-    @TableGenerator(
-            name = "artistGenerator",
-            allocationSize = 1,
-            initialValue = 1)
-    @Id
-    @GeneratedValue(
-            strategy=GenerationType.TABLE,
-            generator="artistGenerator")
-    private Integer id;
-    private String name;
-
+public class Artist extends BaseEntity implements IModel {
     @JsonIgnoreProperties(value = {"artist"})
-    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Attachment> attachments;
 
     //mozna wyswietlic strone artysty i zobaczyc w jakich wydarzeniach bral udział
     @JsonIgnore
-    @ManyToMany(mappedBy = "artists")
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     private List<Event> events;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<Attachment> getAttachments() {
         return attachments;

@@ -10,10 +10,10 @@
         <div class="row" *ngFor="let event of events; let i = index">
           <ng-container *ngIf="event">
             <div class="event-card">
-              <img src="assets/eventsPhotos/event{{i}}.jpg" class="event-image" alt="Event Photo 1">
+              <img [src]="'data:image/jpeg;base64,' + event.attachments[0].image" *ngIf="event.attachments" class="event-image" alt="Event Photo 1">
               <div class="description-container d-flex flex-column mx-2">
-                <p class="h6">{{ event.name }}</p>{{i}}
-                <p class="h6 description-date">{{ event.startDate | date: 'dd/MM/yyyy' }} - {{event.endDate | date: 'dd/MM/yyyy' }}</p>
+                <h1 style="font-weight: bold;">{{ event.name }}</h1>
+                <h4 class="description-date">{{ event.startDate | date: 'dd/MM/yyyy' }} - {{event.endDate | date: 'dd/MM/yyyy' }}</h4>
                 <p class="description">{{ event.description }}</p>
                 <div class="event-description">
                 </div>

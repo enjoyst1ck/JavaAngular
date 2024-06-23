@@ -6,7 +6,10 @@ import EventHub.models.Event;
 import EventHub.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -66,14 +69,22 @@ public class EventService extends GenericService<Event, EventDto, EventRepositor
                 }
             });
         }
-//        if(attachments != null) attachmentRepository.saveAll(attachments);
 
         repo.save(event);
 
-        if (true) {
-
-        }
-
         return getAll();
+    }
+
+    public List<EventDto> findByEventName(String eventName) throws Exception {
+        var event = repo.findByEventName(eventName, null);
+
+        return event.stream().map(mapper::toDto).toList();
+    }
+
+    public List<EventDto> findWithSort(String eventName, String sortField) throws Exception {
+        Sort sort = Sort.by(sortField);
+        var event = repo.findByEventName(eventName, sort);
+
+        return event.stream().map(mapper::toDto).toList();
     }
 }

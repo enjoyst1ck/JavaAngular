@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ArtistListComponent } from './artist-list/artist-list.component';
 
 const routes: Routes = [
-  //{ path: '', component: ArtistListComponent },
+  { path: '', component: ArtistListComponent },
   //{ path: ':id', component: ArtistDetailsComponent },
   //{ path: '/update', component: ArtistFormComponent },
 ];

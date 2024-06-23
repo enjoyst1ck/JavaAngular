@@ -28,22 +28,22 @@ export class EventApi extends GenericApi<EventDto> {
   getFiveLast(methodName: string = "getfivelast"): Observable<EventDto[]> {
     //this.authService.setCredentials('admin', 'admin');e
     
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic admin:admin'//this.authService.getAuthorizationHeader()
-    });
+    // const headers = new HttpHeaders({
+    //   'Authorization': 'Basic admin:admin'//this.authService.getAuthorizationHeader()
+    // });
 
-    let events = super.getAll(this.controllerName, methodName, headers);
+    let events = super.getAll(this.controllerName, methodName);
     return events;
   }
 
   override getAll(methodName: string = "getall"): Observable<EventDto[]> {
     //this.authService.setCredentials('admin', 'admin');
     
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic admin:admin'//this.authService.getAuthorizationHeader()
-    });
+    // const headers = new HttpHeaders({
+    //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb2dpbiIsImlhdCI6MTcxOTE3Njk2NSwiZXhwIjoxNzE5NzgxNzY1fQ.BO5tfekUw6j3ERBlrBBntofqnFuYNVhAwCwg8Tnur9M'//this.authService.getAuthorizationHeader()
+    // });
 
-    let events = super.getAll(this.controllerName, methodName, headers);
+    let events = super.getAll(this.controllerName, methodName);
     return events;
   }
 

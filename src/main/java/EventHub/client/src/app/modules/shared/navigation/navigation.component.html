@@ -24,10 +24,10 @@
         Artists
       </span>
     </button>
-    <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/organizers" routerLinkActive="active">  
-      <img src="assets/icons/organizerIcon.svg" class="navbar-icon" alt="Organizer Icon">
+    <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/staff" routerLinkActive="active">  
+      <img src="assets/icons/organizerIcon.svg" class="navbar-icon" alt="Staff Icon">
       <span class="nav-text">
-      Organizers
+        Staff
     </span>
     </button>
     <button type="button" class="btn btn d-flex flex-row justify-content-center align-items-center" routerLink="/reviews" routerLinkActive="active">
@@ -38,7 +38,7 @@
     </button>
   </div>
   <div class="login-button"> 
-    <ng-container *ngIf="isLoggedIn else logOutButton">
+    <ng-container *ngIf="!isLoggedIn else logOutButton">
       <button type="button" class="btn btn d-flex justify-content-center align-items-center mx-3" routerLink="/login" routerLinkActive="active">
         <img src="assets/icons/login.png" class="navbar-icon" alt="Login Icon">
         <span class="nav-text">

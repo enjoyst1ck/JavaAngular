@@ -1,6 +1,7 @@
 package EventHub.services;
 
 import EventHub.dtos.IDto;
+import EventHub.helpers.NotFoundException;
 import EventHub.mappers.IMapper;
 import EventHub.models.IModel;
 import org.hibernate.Hibernate;
@@ -26,13 +27,11 @@ public abstract class GenericService<M extends IModel, D extends IDto, R extends
     }
 
     public D getById(Integer id) throws Exception {
-        Optional<M> object = repo.findById(id);
+        M object = repo.findById(id).orElseThrow(
+                () -> new NotFoundException("Object is not exist, id: " + id)
+        );
 
-        if(object == null) {
-            throw new Exception("Object not found");
-        }
-
-        return mapper.toDto(object.get());
+        return mapper.toDto(object);
     }
     public D insert(D objectDto) {
         var entity = mapper.toModel(objectDto);
@@ -41,12 +40,20 @@ public abstract class GenericService<M extends IModel, D extends IDto, R extends
     }
 
     public D update(D objectDto) {
+        M object = repo.findById(objectDto.getId()).orElseThrow(
+                () -> new NotFoundException("Object is not exist, id: " + objectDto.getId())
+        );
+
         var entity = mapper.toModel(objectDto);
         var savedEntity = repo.save(entity);
         return mapper.toDto(savedEntity);
     }
 
     public void delete(Integer id) {
+        M object = repo.findById(id).orElseThrow(
+                () -> new NotFoundException("Object is not exist, id: " + id)
+        );
+
         repo.deleteById(id);
     }
 }

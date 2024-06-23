@@ -7,6 +7,7 @@ import { VenueDto } from 'src/app/dtos/venueDto';
 import { StaffDto } from 'src/app/dtos/staffDto';
 import { EventService } from '../event.service';
 import { ArtistDto } from 'src/app/dtos/artistDto';
+import {ErrorStateMatcher} from '@angular/material/core';
 
 @Component({
   selector: 'app-event-form',
@@ -32,7 +33,7 @@ export class EventFormComponent implements OnInit {
 
   form: FormGroup;
   isNew: boolean;
-
+  matcher = new ErrorStateMatcher();
 
   constructor(public dialogRef: MatDialogRef<EventFormComponent>,
               private service: EventService,

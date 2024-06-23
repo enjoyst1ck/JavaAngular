@@ -1,5 +1,6 @@
 package EventHub.services;
 
+import EventHub.helpers.NotFoundException;
 import EventHub.models.Attachment;
 import EventHub.repositories.AttachmentRepository;
 import jakarta.transaction.Transactional;
@@ -12,11 +13,19 @@ public class AttachmentService {
     private AttachmentRepository repo;
 
     public Attachment getById(Integer id) {
-        return repo.findById(id).get();
+        Attachment attachment = repo.findById(id).orElseThrow(
+                () -> new NotFoundException("Object is not exist, id: " + id)
+        );
+
+        return attachment;
     }
 
     @Transactional
     public void deleteById(Integer id) {
+        Attachment attachment = repo.findById(id).orElseThrow(
+                () -> new NotFoundException("Object is not exist, id: " + id)
+        );
+
         repo.deleteById(id);
     }
 }

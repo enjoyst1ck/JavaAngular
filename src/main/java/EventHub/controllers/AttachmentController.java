@@ -13,7 +13,7 @@ public class AttachmentController {
     private AttachmentService service;
 
     @GetMapping("attachments/{id}")
-    private Attachment getById(@PathVariable Integer id) {
+    private Attachment getById(@PathVariable Integer id) throws Exception {
 
         return service.getById(id);
 
@@ -23,7 +23,7 @@ public class AttachmentController {
     }
 
     @DeleteMapping("attachments/delete/{id}")
-    private void delete(@PathVariable Integer id) {
+    private void delete(@PathVariable Integer id) throws Exception {
 
         service.deleteById(id);
 
