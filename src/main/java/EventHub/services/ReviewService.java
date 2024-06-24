@@ -1,11 +1,14 @@
 package EventHub.services;
 
 import EventHub.dtos.ReviewDto;
+import EventHub.helpers.NotFoundException;
 import EventHub.mappers.ReviewMapper;
 import EventHub.models.Review;
 import EventHub.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ReviewService extends GenericService<Review, ReviewDto, ReviewRepository, ReviewMapper> {
@@ -31,5 +34,11 @@ public class ReviewService extends GenericService<Review, ReviewDto, ReviewRepos
         var entity = mapper.toModel(reviewDto);
         var savedEntity = repo.save(entity);
         return mapper.toDto(savedEntity);
+    }
+    @Override
+    public ReviewDto getById(Integer id) throws Exception {
+        Review object = repo.findById(id).get();
+
+        return mapper.toDto(object);
     }
 }

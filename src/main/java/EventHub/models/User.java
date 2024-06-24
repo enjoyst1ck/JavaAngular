@@ -1,5 +1,6 @@
 package EventHub.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -26,7 +27,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String role;
-    @JsonIgnoreProperties(value = {"review"})
+    @JsonIgnore
     @OneToMany(mappedBy = "userFrom", cascade = CascadeType.ALL)
     private List<Review> reviews;
 

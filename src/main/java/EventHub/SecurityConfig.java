@@ -29,44 +29,21 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
-
-//    @Bean
-//    public SecurityFilterChain eventsfilterChain(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests(auth -> auth.requestMatchers("/events")
-//                        .authenticated()
-//                        .requestMatchers(HttpMethod.GET, "/events/getall").hasAnyRole("ADMIN", "MODERATOR", "ORGANIZER", "USER")
-//                        .requestMatchers(HttpMethod.POST, "/events/add").hasAnyRole("ADMIN", "MODERATOR", "ORGANIZER")
-//                        .requestMatchers(HttpMethod.PUT, "/events/update").hasAnyRole("ADMIN", "MODERATOR", "ORGANIZER")
-//                        .requestMatchers(HttpMethod.DELETE, "/events/delete").hasAnyRole("ADMIN", "MODERATOR", "ORGANIZER")
-//                        .anyRequest().permitAll())
-//                .formLogin(form -> form.permitAll())
-//                .httpBasic(httpSecurityHttpBasicConfigurer -> httpSecurityHttpBasicConfigurer.authenticationEntryPoint(authenticationEntryPoint))
-//                .csrf(AbstractHttpConfigurer::disable);
-//
-//        return http.build();
-//    }
-
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request->request
-                        .requestMatchers("/auth/**", "/public/**").permitAll()
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/account/**", "/public/**").permitAll()
                         .requestMatchers("/user/**").hasAnyAuthority("USER")
-                        .requestMatchers("/adminuser/**").hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers(HttpMethod.GET, "/artists/getall").permitAll()
-                        //.requestMatchers("/artists/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers("/artists/**").hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers(HttpMethod.GET, "/staff/getall").permitAll()
-                        //.requestMatchers("/staff/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers("/staff/**").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/venues/getall").permitAll()
-                        //.requestMatchers("/venues/**").hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers("/events/**").permitAll()
-                        .requestMatchers("/artists/**").permitAll()
-                        .requestMatchers("/staff/**").permitAll()
+                        .requestMatchers("/attachments/**").permitAll()
+                        .requestMatchers("/reviews/**").hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers("/venues/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -93,15 +70,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void establishUsers()
-//    {
-//        userDetailsService.saveUser(new User("michal", passwordEncoder().encode("michal"), "ROLE_USER"));
-//        userDetailsService.saveUser(new User("jan", passwordEncoder().encode("jan"), "ROLE_USER"));
-//        userDetailsService.saveUser(new User("admin", passwordEncoder().encode("admin"), "ROLE_ADMIN"));
-//        userDetailsService.saveUser(new User("kamil", passwordEncoder().encode("kamil"), "ROLE_USER"));
-//        userDetailsService.saveUser(new User("wacek", passwordEncoder().encode("wacek"), "ROLE_USER"));
-//        userDetailsService.saveUser(new User("kuba", passwordEncoder().encode("kuba"), "ROLE_ADMIN"));
-//    }
 }

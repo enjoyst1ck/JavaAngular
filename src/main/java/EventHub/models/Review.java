@@ -1,5 +1,6 @@
 package EventHub.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -18,11 +19,12 @@ public class Review implements IModel {
     private Integer id;
     private Date date;
     private String comment;
-    @JsonIgnoreProperties(value = {"reviews"})
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User userFrom;
-    @JsonIgnoreProperties(value = {"reviews"})
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;

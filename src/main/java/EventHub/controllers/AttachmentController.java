@@ -16,19 +16,11 @@ public class AttachmentController {
     private Attachment getById(@PathVariable Integer id) throws Exception {
 
         return service.getById(id);
-
-        /*Attachment attachment = service.getById(id);
-        Hibernate.initialize(attachment);
-        return attachment;*/
     }
 
     @DeleteMapping("attachments/delete/{id}")
     private void delete(@PathVariable Integer id) throws Exception {
 
         service.deleteById(id);
-
-        /*Attachment attachment = service.getById(id);
-        Hibernate.initialize(attachment);
-        return attachment;*/
     }
 }

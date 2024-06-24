@@ -27,113 +27,112 @@ public class UserService {
 
 
     public UserDto register(UserDto registrationRequest){
-        UserDto resp = new UserDto();
+        UserDto res = new UserDto();
 
         try {
-            User ourUser = new User();
-            ourUser.setRole(registrationRequest.getRole());
-            ourUser.setUsername(registrationRequest.getUsername());
-            ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            User user = new User();
+            user.setRole(registrationRequest.getRole());
+            user.setUsername(registrationRequest.getUsername());
+            user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            User result = userRepo.save(user);
 
-            User ourUsersResult = userRepo.save(ourUser);
-
-            if(ourUsersResult.getId() > 0){
-                resp.setOurUsers(ourUsersResult);
-                resp.setMessage("User Saved Successfully");
-                resp.setStatusCode(200);
+            if (result.getId() > 0) {
+                res.setOurUsers(result);
+                res.setMessage("User Saved");
+                res.setStatusCode(200);
             }
 
-        }catch (Exception e){
-            resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+        } catch (Exception e){
+            res.setStatusCode(500);
+            res.setError(e.getMessage());
         }
 
-        return resp;
+        return res;
     }
 
-    public UserDto login(UserDto loginRequest){
-        UserDto response = new UserDto();
+    public UserDto login(UserDto loginDto){
+        UserDto res = new UserDto();
 
         try {
             authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
-            var user = userRepo.findByUsername(loginRequest.getUsername());
+            var user = userRepo.findByUsername(loginDto.getUsername());
             var jwt = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
-            response.setStatusCode(200);
-            response.setToken(jwt);
-            response.setRole(user.getRole());
-            response.setRefreshToken(refreshToken);
-            response.setExpirationTime("48Hrs");
-            response.setMessage("Successfully Logged In");
+            res.setStatusCode(200);
+            res.setToken(jwt);
+            res.setRole(user.getRole());
+            res.setRefreshToken(refreshToken);
+            res.setExpirationTime("24Hr");
+            res.setMessage("Successfully Logged In");
 
         }catch (Exception e){
-            response.setStatusCode(500);
-            response.setMessage(e.getMessage());
+            res.setStatusCode(500);
+            res.setMessage(e.getMessage());
         }
 
-        return response;
+        return res;
     }
 
     public UserDto refreshToken(UserDto refreshTokenReqiest){
-        UserDto response = new UserDto();
+        UserDto res = new UserDto();
         try{
             String username = jwtService.extractUsername(refreshTokenReqiest.getToken());
             User users = userRepo.findByUsername(username);
             if (jwtService.isTokenValid(refreshTokenReqiest.getToken(), users)) {
                 var jwt = jwtService.generateToken(users);
-                response.setStatusCode(200);
-                response.setToken(jwt);
-                response.setRefreshToken(refreshTokenReqiest.getToken());
-                response.setExpirationTime("24Hr");
-                response.setMessage("Successfully Refreshed Token");
+                res.setStatusCode(200);
+                res.setToken(jwt);
+                res.setRefreshToken(refreshTokenReqiest.getToken());
+                res.setExpirationTime("24Hr");
+                res.setMessage("Successfully Refreshed Token");
             }
-            response.setStatusCode(200);
-            return response;
+            res.setStatusCode(200);
+            return res;
 
         }catch (Exception e){
-            response.setStatusCode(500);
-            response.setMessage(e.getMessage());
-            return response;
+            res.setStatusCode(500);
+            res.setMessage(e.getMessage());
+            return res;
         }
     }
 
 
     public UserDto getAllUsers() {
-        UserDto reqRes = new UserDto();
+        UserDto res = new UserDto();
 
         try {
             List<User> result = userRepo.findAll();
             if (!result.isEmpty()) {
-                reqRes.setOurUsersList(result);
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("Successful");
+                res.setOurUsersList(result);
+                res.setStatusCode(200);
+                res.setMessage("Successful");
             } else {
-                reqRes.setStatusCode(404);
-                reqRes.setMessage("No users found");
+                res.setStatusCode(404);
+                res.setMessage("No users found");
             }
-            return reqRes;
+            return res;
         } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred: " + e.getMessage());
-            return reqRes;
+            res.setStatusCode(500);
+            res.setMessage("Error message: " + e.getMessage());
+            return res;
         }
     }
 
 
     public UserDto getUsersById(Integer id) {
-        UserDto reqRes = new UserDto();
+        UserDto res = new UserDto();
         try {
             User usersById = userRepo.findById(Long.valueOf(id)).orElseThrow(() -> new RuntimeException("User Not found"));
-            reqRes.setOurUsers(usersById);
-            reqRes.setStatusCode(200);
-            reqRes.setMessage("Users with id '" + id + "' found successfully");
+            res.setOurUsers(usersById);
+            res.setStatusCode(200);
+            res.setMessage("Users with id '" + id + "' found successfully");
         } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred: " + e.getMessage());
+            res.setStatusCode(500);
+            res.setMessage("Error occurred: " + e.getMessage());
         }
-        return reqRes;
+        return res;
     }
 
 
@@ -165,9 +164,7 @@ public class UserService {
                 existingUser.setUsername(updatedUser.getUsername());
                 existingUser.setRole(updatedUser.getRole());
 
-                // Check if password is present in the request
                 if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                    // Encode the password and update it
                     existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
                 }
 
@@ -188,23 +185,23 @@ public class UserService {
 
 
     public UserDto getMyInfo(String username){
-        UserDto reqRes = new UserDto();
+        UserDto res = new UserDto();
         try {
             User userOptional = userRepo.findByUsername(username);
             if (userOptional != null) {
-                reqRes.setOurUsers(userOptional);
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("successful");
+                res.setOurUsers(userOptional);
+                res.setStatusCode(200);
+                res.setMessage("Successfuly");
             } else {
-                reqRes.setStatusCode(404);
-                reqRes.setMessage("User not found for update");
+                res.setStatusCode(404);
+                res.setMessage("User not found for update");
             }
 
         }catch (Exception e){
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred while getting user info: " + e.getMessage());
+            res.setStatusCode(500);
+            res.setMessage("Error: " + e.getMessage());
         }
 
-        return reqRes;
+        return res;
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 public class Staff extends BaseEntity implements IModel {
-    @JsonIgnoreProperties(value = {"staff"})
+    @JsonIgnore
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
     private List<Attachment> attachments;
     //lista organizowanych eventow

@@ -7,13 +7,13 @@ import java.util.List;
 
 @Entity
 public class Artist extends BaseEntity implements IModel {
-    @JsonIgnoreProperties(value = {"artist"})
+    @JsonIgnore
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Attachment> attachments;
 
-    //mozna wyswietlic strone artysty i zobaczyc w jakich wydarzeniach bral udział
     @JsonIgnore
-    @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"artists"})
+    @ManyToMany(mappedBy = "artists")
     private List<Event> events;
 
     public List<Attachment> getAttachments() {

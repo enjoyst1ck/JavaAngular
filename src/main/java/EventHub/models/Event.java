@@ -25,15 +25,15 @@ public class Event implements IModel {
     @JsonIgnoreProperties(value = {"event"})
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Attachment> attachments;
+    @JsonIgnoreProperties(value = "event")
     @JsonIgnore
-    @JsonIgnoreProperties(value = {"event"})
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviews;
     @JsonIgnoreProperties(value = {"events"})
     @ManyToOne
     @JoinColumn(name = "venue_id")
     private Venue venue;
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"events"})
     @ManyToMany
     @JoinTable(name = "eventArtist",
                joinColumns = {@JoinColumn(name = "id_event")},

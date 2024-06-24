@@ -19,45 +19,17 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/account/register")
-    public ResponseEntity<UserDto> register(@RequestBody UserDto req){
-        return ResponseEntity.ok(service.register(req));
+    public ResponseEntity<UserDto> register(@RequestBody UserDto userDto){
+        return ResponseEntity.ok(service.register(userDto));
     }
 
     @PostMapping("/account/login")
-    public ResponseEntity<UserDto> login(@RequestBody UserDto req){
-        return ResponseEntity.ok(service.login(req));
+    public ResponseEntity<UserDto> login(@RequestBody UserDto userDto){
+        return ResponseEntity.ok(service.login(userDto));
     }
 
     @PostMapping("/account/refresh")
-    public ResponseEntity<UserDto> refreshToken(@RequestBody UserDto req){
-        return ResponseEntity.ok(service.refreshToken(req));
-    }
-
-    @GetMapping("/admin/get-all-users")
-    public ResponseEntity<UserDto> getAllUsers(){
-        return ResponseEntity.ok(service.getAllUsers());
-    }
-
-    @GetMapping("/admin/get-users/{userId}")
-    public ResponseEntity<UserDto> getUSerById(@PathVariable Integer userId){
-        return ResponseEntity.ok(service.getUsersById(userId));
-    }
-
-    @PutMapping("/admin/update/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Integer userId, @RequestBody User reqRes){
-        return ResponseEntity.ok(service.updateUser(userId, reqRes));
-    }
-
-    @GetMapping("/adminuser/get-profile")
-    public ResponseEntity<UserDto> getMyProfile(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        UserDto response = service.getMyInfo(email);
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
-
-    @DeleteMapping("/admin/delete/{userId}")
-    public ResponseEntity<UserDto> deleteUser(@PathVariable Integer userId){
-        return ResponseEntity.ok(service.deleteUser(userId));
+    public ResponseEntity<UserDto> refreshToken(@RequestBody UserDto userDto){
+        return ResponseEntity.ok(service.refreshToken(userDto));
     }
 }

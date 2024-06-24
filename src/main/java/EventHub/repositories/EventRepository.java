@@ -14,6 +14,6 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Query(value = "SELECT * FROM event_hub.event ORDER BY start_date LIMIT 5", nativeQuery = true)
     public List<Event> getFiveLast();
 
-    @Query(value = "SELECT e FROM Event e WHERE (:eventName IS NULL OR e.name = :eventName)")
+    @Query(value = "SELECT e FROM Event e WHERE (:eventName IS NULL OR e.name LIKE %:eventName%)")
     public List<Event> findByEventName(@Param("eventName") String eventName, Sort sort);
 }

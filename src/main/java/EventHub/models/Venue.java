@@ -1,5 +1,6 @@
 package EventHub.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -10,8 +11,8 @@ public class Venue extends BaseEntity implements IModel {
     private String description;
     private String city;
     private String address;
-    @JsonIgnoreProperties(value = {"venue"})
-    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
 
     public String getDescription() {
